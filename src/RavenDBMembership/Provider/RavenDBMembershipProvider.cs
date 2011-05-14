@@ -477,6 +477,7 @@ namespace RavenDBMembership.Provider
                 {
                     user.LastFailedPasswordAttempt = DateTime.Now;
                     user.FailedPasswordAttempts++;
+                    user.IsLockedOut = IsLockedOutValidationHelper(user);
                     session.SaveChanges();
                 }
             }
@@ -487,10 +488,19 @@ namespace RavenDBMembership.Provider
 
         #region Private Helper Functions
 
+        private bool IsLockedOutValidationHelper(User user)
+        {
+            long minutesSinceLastAttempt = DateTime.Now.Ticks - user.LastFailedPasswordAttempt.Ticks;
+            if (user.FailedPasswordAttempts >= MaxInvalidPasswordAttempts
+                && minutesSinceLastAttempt < (long)PasswordAttemptWindow)
+                return true;
+            return false;
+        }
+
         private User UpdatePasswordAttempts(User u, PasswordAttemptTypes attemptType, bool signedInOk)
         {
-            long diff = DateTime.Now.Ticks - u.LastFailedPasswordAttempt.Ticks;
-            if (signedInOk || diff > (long)PasswordAttemptWindow)
+            long minutesSinceLastAttempt = DateTime.Now.Ticks - u.LastFailedPasswordAttempt.Ticks;
+            if (signedInOk || minutesSinceLastAttempt > (long)PasswordAttemptWindow)
             {
                 u.LastFailedPasswordAttempt = new DateTime(1900, 1, 1);
                 u.FailedPasswordAttempts = 0;
@@ -624,7 +634,7 @@ namespace RavenDBMembership.Provider
         }
 
         /// <summary>
-        /// Encode the password //Chris Pells
+        /// Encode the password //Chris Pels
         /// </summary>
         /// <param name="password"></param>
         /// <param name="salt"></param>
@@ -653,7 +663,7 @@ namespace RavenDBMembership.Provider
         }
 
         /// <summary>
-        /// UnEncode the password //Chris Pells
+        /// UnEncode the password //Chris Pels
         /// </summary>
         /// <param name="encodedPassword"></param>
         /// <param name="salt"></param>

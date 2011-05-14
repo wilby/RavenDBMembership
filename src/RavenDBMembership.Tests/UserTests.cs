@@ -692,6 +692,71 @@ namespace RavenDBMembership.Tests
             }
         }
 
+        [Test]
+        public void IsLockedOut_test_true_when_failedPasswordAttempts_is_gt_maxPasswordAttempts()
+        {
+            using (var store = NewInMemoryStore())
+            {
+                //Arrange
+                var config = CreateConfigFake();
+                var user = CreateUserFake();
+                var provider = new RavenDBMembershipProvider();
+                provider.Initialize(config["applicationName"], config);
+                provider.DocumentStore = store;
+
+                //Act
+                using (var session = provider.DocumentStore.OpenSession())
+                {
+                    session.Store(user);
+                    session.SaveChanges();
+                }
+                for (int i = 0; i < 10; i++)
+                {
+                    provider.ValidateUser("wilby", "wrongpassword");
+                }
+                using (var session = provider.DocumentStore.OpenSession())
+                {
+                    user = session.Query<User>().Where(x => x.Username == user.Username && x.ApplicationName == user.ApplicationName).SingleOrDefault();
+                }
+
+                //Assert 
+                Assert.IsTrue(user.IsLockedOut);
+            }
+        }
+
+        [Test]
+        public void IsLockedOut_test_false_when_failedPasswordAttempts_is_gt_maxPasswordAttempts_and_passwordWindow_is_already_past()
+        {
+            using (var store = NewInMemoryStore())
+            {
+                //Arrange
+                var config = CreateConfigFake();
+                config["passwordAttemptWindow"] = "0";
+                var user = CreateUserFake();
+                var provider = new RavenDBMembershipProvider();
+                provider.Initialize(config["applicationName"], config);
+                provider.DocumentStore = store;
+
+                //Act
+                using (var session = provider.DocumentStore.OpenSession())
+                {
+                    session.Store(user);
+                    session.SaveChanges();
+                }
+                for (int i = 0; i < 10; i++)
+                {
+                    provider.ValidateUser("wilby", "wrongpassword");
+                }
+                using (var session = provider.DocumentStore.OpenSession())
+                {
+                    user = session.Query<User>().Where(x => x.Username == user.Username && x.ApplicationName == user.ApplicationName).SingleOrDefault();
+                }
+
+                //Assert 
+                Assert.IsFalse(user.IsLockedOut);
+            }
+        }
+
         private User GetUserFromDocumentStore(IDocumentStore store, string username)
         {
             using (var session = store.OpenSession())
