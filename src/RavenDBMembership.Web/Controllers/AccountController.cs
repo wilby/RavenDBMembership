@@ -88,7 +88,8 @@ namespace RavenDBMembership.Web.Controllers
 			if (ModelState.IsValid)
 			{
 				// Attempt to register the user
-				MembershipCreateStatus createStatus = MembershipService.CreateUser(model.UserName, model.Password, model.Email);
+				MembershipCreateStatus createStatus = MembershipService.CreateUser(model.UserName, model.Password, model.Email,
+                   model.FirstName, model.LastName, model.PasswordQuestion, model.PasswordQuestionAnswer);
                 
 				if (createStatus == MembershipCreateStatus.Success)
 				{

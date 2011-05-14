@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using System.Transactions;
+using RavenDBMembership.Provider;
 
 namespace RavenDBMembership.Web.Models
 {
@@ -55,6 +56,14 @@ namespace RavenDBMembership.Web.Models
 		[Display(Name = "User name")]
 		public string UserName { get; set; }
 
+        [Required]
+        [DisplayName("First Name")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [DisplayName("Last Name")]
+        public string LastName { get; set; }
+
 		[Required]
 		[DataType(DataType.EmailAddress)]
 		[Display(Name = "Email address")]
@@ -70,7 +79,17 @@ namespace RavenDBMembership.Web.Models
 		[Display(Name = "Confirm password")]
 		[Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
 		public string ConfirmPassword { get; set; }
+
+        [Required]
+        [DisplayName("Security Question")]
+        public string PasswordQuestion { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        [DisplayName("Security Question Answer")]
+        public string PasswordQuestionAnswer { get; set; }
 	}
+
 	#endregion
 
 	#region Services
@@ -84,7 +103,12 @@ namespace RavenDBMembership.Web.Models
 		int MinPasswordLength { get; }
 
 		bool ValidateUser(string userName, string password);
+
 		MembershipCreateStatus CreateUser(string userName, string password, string email);
+
+        MembershipCreateStatus CreateUser(string userName, string password, string email, string firstName,
+            string lastName, string question, string answer);
+
 		bool ChangePassword(string userName, string oldPassword, string newPassword);
 
 		MembershipUserCollection GetAllUsers();
@@ -104,7 +128,7 @@ namespace RavenDBMembership.Web.Models
 
 	public class AccountMembershipService : IMembershipService
 	{
-		private readonly MembershipProvider _provider;
+		private readonly RavenDBMembershipProvider _provider;
 		private readonly RoleProvider _roleProvider;
 
 		public AccountMembershipService() : this(null, null)
@@ -113,7 +137,7 @@ namespace RavenDBMembership.Web.Models
 
 		public AccountMembershipService(MembershipProvider provider, RoleProvider roleProvider)
 		{
-			_provider = provider ?? Membership.Provider;
+			_provider = (RavenDBMembershipProvider)(provider ?? Membership.Provider);
 			_roleProvider = roleProvider ?? Roles.Provider;
 		}
 
@@ -143,6 +167,20 @@ namespace RavenDBMembership.Web.Models
 			_provider.CreateUser(userName, password, email, null, null, true, null, out status);
 			return status;
 		}
+
+        public MembershipCreateStatus CreateUser(string userName, string password, string email, string firstName, 
+            string lastName, string question, string answer) 
+        {
+            if (String.IsNullOrEmpty(userName)) throw new ArgumentException("Value cannot be null or empty.", "userName");
+            if (String.IsNullOrEmpty(password)) throw new ArgumentException("Value cannot be null or empty.", "password");
+            if (String.IsNullOrEmpty(email)) throw new ArgumentException("Value cannot be null or empty.", "email");
+
+            MembershipCreateStatus status;
+            string fullName = string.Format("{0} {1}", firstName, lastName);
+            _provider.CreateUser(userName, password, email, fullName, question, answer, true, null, out status);
+            
+            return status;
+        }
 
 		public bool ChangePassword(string userName, string oldPassword, string newPassword)
 		{

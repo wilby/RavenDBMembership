@@ -206,7 +206,8 @@ namespace RavenDBMembership.Provider
                 status = MembershipCreateStatus.InvalidPassword;
                 return null;
             }
-
+            
+            //If we require a qeustion and answer for password reset/retrieval and they were not provided throw exception
             if (((_enablePasswordReset || _enablePasswordRetrieval) && _requiresQuestionAndAnswer) && string.IsNullOrEmpty(passwordAnswer))
                 throw new ArgumentException("Requires question and answer is set to true and a question and answer were not provided.");
 
@@ -249,6 +250,25 @@ namespace RavenDBMembership.Provider
             }
         }
 
+        public MembershipUser CreateUser(string username, string password, string email, string fullName,
+            string passwordQuestion, string passwordAnswer, bool isApproved, object providerUserKey,
+            out MembershipCreateStatus status)
+        {
+            MembershipUser user = this.CreateUser(username, password, email, passwordQuestion, passwordAnswer,
+                isApproved, providerUserKey, out status);
+
+            if (user != null)
+            {
+                using (var session = _documentStore.OpenSession())
+                {
+                    var ravenUser = session.Load<User>(user.ProviderUserKey.ToString());
+                    ravenUser.FullName = fullName;
+                    session.SaveChanges();
+                }                
+            }
+            return user;
+        }
+
         public override bool DeleteUser(string username, bool deleteAllRelatedData)
         {
             using (var session = this.DocumentStore.OpenSession())
@@ -261,7 +281,7 @@ namespace RavenDBMembership.Provider
                     var user = q.SingleOrDefault();
                     if (user == null)
                     {
-                        throw new NullReferenceException("The user could not be deleted.");
+                        throw new NullReferenceException("The user could not be deleted, they don't exist.");
                     }
                     session.Delete(user);
                     session.SaveChanges();
@@ -297,7 +317,7 @@ namespace RavenDBMembership.Provider
             using (var session = this.DocumentStore.OpenSession())
             {
                 return (from u in session.Query<User>()
-                        where u.IsOnline == true
+                        where u.ApplicationName == this.ApplicationName && u.IsOnline == true
                         select u).Count<User>();
             }
         }

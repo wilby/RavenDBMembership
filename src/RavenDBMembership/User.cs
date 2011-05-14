@@ -19,7 +19,8 @@ namespace RavenDBMembership
 		public DateTime? DateLastLogin { get; set; }
 		public IList<string> Roles { get; set; }
 		
-		#region Extended
+		#region Extended User
+
 		public string PasswordQuestion { get; set; }
 		public string PasswordAnswer { get; set; }
 		public bool IsLockedOut { get; set; }		
@@ -29,6 +30,7 @@ namespace RavenDBMembership
         public DateTime LastFailedPasswordAttempt { get; set; }
 		public string Comment { get; set; }
         public bool IsApproved { get; set; }
+
 		#endregion
 
 		public User()

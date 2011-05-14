@@ -406,8 +406,10 @@ namespace RavenDBMembership.Tests
                         session.Store(u);                        
                     }                    
                     session.SaveChanges();                    
-                    var provider = new RavenDBMembershipProvider();                                        
+                    var provider = new RavenDBMembershipProvider();
+                    var config = CreateConfigFake();                    
                     provider.DocumentStore = store;
+                    provider.Initialize(config["applicationName"], config);
 
                     // Act                     
                     int totalOnline = provider.GetNumberOfUsersOnline();                    
