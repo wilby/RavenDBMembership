@@ -344,16 +344,16 @@ namespace RavenDBMembership.Provider
                     throw new NullReferenceException("The specified user does not exist.");
 
                 var encodedAnswer = EncodePassword(answer, user.PasswordSalt);
-                if (user.PasswordAnswer != encodedAnswer)
-                {
-                    if (RequiresQuestionAndAnswer)
-                    {
-                        user.FailedPasswordAnswerAttempts++;
-                        session.SaveChanges();
-                    }
+                if (RequiresQuestionAndAnswer && user.PasswordAnswer != encodedAnswer)
+                {                    
+                    user.FailedPasswordAnswerAttempts++;
+                    session.SaveChanges();
+                 
                     throw new MembershipPasswordException("The password question's answer is incorrect.");
                 }
             }
+            if (PasswordFormat == MembershipPasswordFormat.Clear)
+                return user.PasswordHash;
 
             return UnEncodePassword(user.PasswordHash, user.PasswordSalt);
         }
@@ -395,7 +395,7 @@ namespace RavenDBMembership.Provider
         public override string ResetPassword(string username, string answer)
         {
             if (!EnablePasswordReset)
-                throw new ProviderException("Password reset is not allowed.");
+                throw new ProviderException("Password reset is not enabled.");
 
             using (var session = this.DocumentStore.OpenSession())
             {
