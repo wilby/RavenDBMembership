@@ -89,7 +89,7 @@ namespace RavenDBMembership.Web.Controllers
 			{
 				// Attempt to register the user
 				MembershipCreateStatus createStatus = MembershipService.CreateUser(model.UserName, model.Password, model.Email,
-                   model.FirstName, model.LastName, model.PasswordQuestion, model.PasswordQuestionAnswer);
+                   model.PasswordQuestion, model.PasswordQuestionAnswer);
                 
 				if (createStatus == MembershipCreateStatus.Success)
 				{
@@ -139,6 +139,38 @@ namespace RavenDBMembership.Web.Controllers
 			return View(model);
 		}
 
+        [Authorize]
+        public ActionResult ChangePasswordQuestionAndAnswer()
+        {
+            ViewBag.PasswordLength = MembershipService.MinPasswordLength;
+            var user = MembershipService.GetUser(User.Identity.Name);
+            var model = new ChangePasswordQuestionAndAnswerModel(user.UserName, user.PasswordQuestion);
+            return View(model);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult ChangePasswordQuestionAndAnswer(ChangePasswordQuestionAndAnswerModel model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                if (MembershipService.ChangePasswordQuestionAndAnswer(User.Identity.Name, model.Password, 
+                    model.PasswordQuestion, model.PasswordQuestionAnswer))
+                {
+                    return RedirectToAction("ChangePasswordSuccess");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "The password is incorrect or the new question and answer are invalid.");
+                }
+            }
+
+            // If we got this far, something failed, redisplay form
+            ViewBag.PasswordLength = MembershipService.MinPasswordLength;
+            return View(model);
+        }
+
 		// **************************************
 		// URL: /Account/ChangePasswordSuccess
 		// **************************************
@@ -180,16 +212,16 @@ namespace RavenDBMembership.Web.Controllers
 		{
 			var user = MembershipService.GetUser(username);
 			var roles = MembershipService.GetAllRoles();
-			var userRoles = MembershipService.GetRolesForUser(user.UserName);
-
-			return View(new EditUserModel(user.UserName, user.Email, roles, userRoles));
+			var userRoles = MembershipService.GetRolesForUser(user.UserName);           
+           
+            return View(new EditUserModel(user.UserName, user.Email, roles, userRoles));
 		}
 
 		[HttpPost]
 		public ActionResult EditUser(EditUserModel model)
 		{
 			var user = MembershipService.GetUser(model.Username);
-			MembershipService.UpdateUser(user, model.UserRoles);
+			MembershipService.UpdateUser(user, model.UserRoles);            
 			return RedirectToAction("ManageUsers");
 		}
 

@@ -360,7 +360,7 @@ namespace RavenDBMembership.Provider
 
         public override MembershipUser GetUser(string username, bool userIsOnline)
         {
-            var user = GetRavenUser(username, userIsOnline);
+            var user = GetRavenDbUser(username, userIsOnline);
             if (user != null)
             {
                 return UserToMembershipUser(user);
@@ -460,8 +460,7 @@ namespace RavenDBMembership.Provider
                 dbUser.Username = user.UserName;
                 dbUser.Email = user.Email;
                 dbUser.DateCreated = user.CreationDate;
-                dbUser.DateLastLogin = user.LastLoginDate;
-                dbUser.PasswordQuestion = user.PasswordQuestion;
+                dbUser.DateLastLogin = user.LastLoginDate;                
                 dbUser.IsOnline = user.IsOnline;
                 dbUser.IsApproved = user.IsApproved;
                 dbUser.IsLockedOut = user.IsLockedOut;
@@ -469,7 +468,7 @@ namespace RavenDBMembership.Provider
                 session.SaveChanges();
             }
         }
-
+        
         public override bool ValidateUser(string username, string password)
         {
             if (string.IsNullOrEmpty(username))
@@ -576,12 +575,12 @@ namespace RavenDBMembership.Provider
 
         private MembershipUser UserToMembershipUser(User user)
         {
-            return new MembershipUser(ProviderName, user.Username, user.Id, user.Email, null, null, true, false
+            return new MembershipUser(ProviderName, user.Username, user.Id, user.Email, user.PasswordQuestion, user.Comment, user.IsApproved, user.IsLockedOut
                 , user.DateCreated, user.DateLastLogin.HasValue ? user.DateLastLogin.Value : new DateTime(1900, 1, 1), new DateTime(1900, 1, 1), new DateTime(1900, 1, 1), new DateTime(1900, 1, 1));
         }
 
         //A helper function for getting a full ravendb User instance.
-        private User GetRavenUser(string username, bool userIsOnline)
+        private User GetRavenDbUser(string username, bool userIsOnline)
         {
             using (var session = this._documentStore.OpenSession())
             {
@@ -589,6 +588,8 @@ namespace RavenDBMembership.Provider
                         where u.Username == username && u.ApplicationName == this.ApplicationName
                         select u;
                 var user = q.SingleOrDefault();
+                user.IsOnline = userIsOnline;
+                session.SaveChanges();
                 return user;
             }
         }

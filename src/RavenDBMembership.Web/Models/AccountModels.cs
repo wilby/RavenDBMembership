@@ -34,6 +34,42 @@ namespace RavenDBMembership.Web.Models
 		public string ConfirmPassword { get; set; }
 	}
 
+    public class ChangePasswordQuestionAndAnswerModel
+    {
+        [Required]
+        [Display(Name = "User name")]
+        public string UserName { get; set; }
+
+        [Required]
+        [ValidatePasswordLength]
+        [DataType(DataType.Password)]
+        [Display(Name = "Password")]
+        public string Password { get; set; }
+
+        [Required]
+        [Display(Name = "New Security Question")]
+        public string PasswordQuestion { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        [Display(Name = "Security Question, Answer")]
+        public string PasswordQuestionAnswer { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        [Compare("PasswordQuestionAnswer")]
+        [Display(Name = "Confirm Answer")]
+        public string ConfirmAnswer { get; set; }
+
+        public ChangePasswordQuestionAndAnswerModel() { }
+
+        public ChangePasswordQuestionAndAnswerModel(string username, string passwordQuestion)
+        {
+            this.UserName = username;
+            this.PasswordQuestion = passwordQuestion;
+        }
+    }
+
 	public class LogOnModel
 	{
 		[Required]
@@ -48,8 +84,7 @@ namespace RavenDBMembership.Web.Models
 		[Display(Name = "Remember me?")]
 		public bool RememberMe { get; set; }
 	}
-
-
+    
 	public class RegisterModel
 	{
 		[Required]
@@ -75,6 +110,7 @@ namespace RavenDBMembership.Web.Models
 		[Display(Name = "Password")]
 		public string Password { get; set; }
 
+        [Required(ErrorMessage="You must confirm the password.")]
 		[DataType(DataType.Password)]
 		[Display(Name = "Confirm password")]
 		[Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
@@ -86,9 +122,16 @@ namespace RavenDBMembership.Web.Models
 
         [Required]
         [DataType(DataType.Password)]
-        [DisplayName("Security Question Answer")]
+        [DisplayName("Security Question, Answer")]
         public string PasswordQuestionAnswer { get; set; }
+
+        [Required(ErrorMessage="You must confirm the question's answer.")]
+        [DataType(DataType.Password)]
+        [DisplayName("Answer Confirmation")]
+        [Compare("Password", ErrorMessage = "The question answer and confirmation answer do not match.")]
+        public string ConfirmPasswordQuestionAnswer { get; set; }
 	}
+    
 
 	#endregion
 
@@ -106,10 +149,12 @@ namespace RavenDBMembership.Web.Models
 
 		MembershipCreateStatus CreateUser(string userName, string password, string email);
 
-        MembershipCreateStatus CreateUser(string userName, string password, string email, string firstName,
-            string lastName, string question, string answer);
+        MembershipCreateStatus CreateUser(string userName, string password, string email, string question, string answer);
 
 		bool ChangePassword(string userName, string oldPassword, string newPassword);
+
+        bool ChangePasswordQuestionAndAnswer(string username, string password,
+            string newPasswordQuestion, string newPasswordAnswer);
 
 		MembershipUserCollection GetAllUsers();
 
@@ -168,16 +213,15 @@ namespace RavenDBMembership.Web.Models
 			return status;
 		}
 
-        public MembershipCreateStatus CreateUser(string userName, string password, string email, string firstName, 
-            string lastName, string question, string answer) 
+        public MembershipCreateStatus CreateUser(string userName, string password, string email, string question, string answer) 
         {
             if (String.IsNullOrEmpty(userName)) throw new ArgumentException("Value cannot be null or empty.", "userName");
             if (String.IsNullOrEmpty(password)) throw new ArgumentException("Value cannot be null or empty.", "password");
             if (String.IsNullOrEmpty(email)) throw new ArgumentException("Value cannot be null or empty.", "email");
 
             MembershipCreateStatus status;
-            string fullName = string.Format("{0} {1}", firstName, lastName);
-            _provider.CreateUser(userName, password, email, fullName, question, answer, true, null, out status);
+            
+            _provider.CreateUser(userName, password, email, question, answer, true, null, out status);
             
             return status;
         }
@@ -204,6 +248,12 @@ namespace RavenDBMembership.Web.Models
 				return false;
 			}
 		}
+
+        public bool ChangePasswordQuestionAndAnswer(string username, string password,
+            string newPasswordQuestion, string newPasswordAnswer)
+        {
+            return _provider.ChangePasswordQuestionAndAnswer(username, password, newPasswordQuestion, newPasswordAnswer);
+        }
 
 		public MembershipUserCollection GetAllUsers()
 		{
@@ -240,12 +290,12 @@ namespace RavenDBMembership.Web.Models
 				if (roles != null && roles.Length > 0)
 				{
 					var rolesToBeAdded = roles.Except(existingRoles).ToArray();
-					_roleProvider.AddUsersToRoles(new[] { user.UserName }, rolesToBeAdded);
+                    _roleProvider.AddUsersToRoles(new[] { user.UserName }, rolesToBeAdded);
 				}
 				if (existingRoles.Length > 0)
 				{
 					var rolesToBeDeleted = (roles != null ? existingRoles.Except(roles) : existingRoles).ToArray();
-					_roleProvider.RemoveUsersFromRoles(new[] { user.UserName }, rolesToBeDeleted);
+                    _roleProvider.RemoveUsersFromRoles(new[] { user.UserName }, rolesToBeDeleted);
 				}
 
 				ts.Complete();
