@@ -35,7 +35,9 @@
                 @Html.CheckBoxFor(m => m.RememberMe)
                 @Html.LabelFor(m => m.RememberMe)
             </div>
-
+            <p>
+                @Html.ActionLink("Forgot Password?", "ResetPassword");
+            </p>
             <p>
                 <input type="submit" value="Log On" />
             </p>

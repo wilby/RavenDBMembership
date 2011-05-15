@@ -34,6 +34,24 @@ namespace RavenDBMembership.Web.Models
 		public string ConfirmPassword { get; set; }
 	}
 
+    public class ResetPasswordQuesitonAndAnswerModel
+    {
+        [Required]
+        [Display(Name = "User name")]
+        public string UserName { get; set; }
+
+        [Required]
+        [Display(Name = "New Security Question")]
+        public string PasswordQuestion { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        [Display(Name = "Security Question, Answer")]
+        public string PasswordQuestionAnswer { get; set; }
+
+        
+    }
+
     public class ChangePasswordQuestionAndAnswerModel
     {
         [Required]
@@ -60,14 +78,19 @@ namespace RavenDBMembership.Web.Models
         [Compare("PasswordQuestionAnswer")]
         [Display(Name = "Confirm Answer")]
         public string ConfirmAnswer { get; set; }
-
-        public ChangePasswordQuestionAndAnswerModel() { }
+               
 
         public ChangePasswordQuestionAndAnswerModel(string username, string passwordQuestion)
         {
             this.UserName = username;
             this.PasswordQuestion = passwordQuestion;
         }
+    }
+
+    public class ResetPasswordModel {
+        [Required]
+        [Display(Name = "User name")]
+        public string UserName { get; set; }
     }
 
 	public class LogOnModel
@@ -155,6 +178,8 @@ namespace RavenDBMembership.Web.Models
 
         bool ChangePasswordQuestionAndAnswer(string username, string password,
             string newPasswordQuestion, string newPasswordAnswer);
+
+        string ResetPassword(string username, string passwordAnswer);        
 
 		MembershipUserCollection GetAllUsers();
 
@@ -248,6 +273,11 @@ namespace RavenDBMembership.Web.Models
 				return false;
 			}
 		}
+
+        public string ResetPassword(string username, string passwordAnswer)
+        {
+            return _provider.ResetPassword(username, passwordAnswer);
+        }
 
         public bool ChangePasswordQuestionAndAnswer(string username, string password,
             string newPasswordQuestion, string newPasswordAnswer)
