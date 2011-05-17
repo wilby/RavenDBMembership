@@ -472,7 +472,7 @@ namespace RavenDBMembership.Provider
         public override bool ValidateUser(string username, string password)
         {
             if (string.IsNullOrEmpty(username))
-                throw new HttpException("The username is not valid");
+                return false;
 
             using (var session = this.DocumentStore.OpenSession())
             {
@@ -481,7 +481,7 @@ namespace RavenDBMembership.Provider
                             select u).SingleOrDefault();
 
                 if (user == null)
-                    throw new HttpException("The user cannot be found.");
+                    return false;
 
                 if (user.PasswordHash == EncodePassword(password, user.PasswordSalt))
                 {

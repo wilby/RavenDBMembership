@@ -258,9 +258,8 @@ namespace RavenDBMembership.Tests
             }
         }
 
-        [Test]
-        [ExpectedException("System.Web.HttpException")]
-        public void ValidateUserTest_should_throw_exception_if_username_is_null_or_empty()
+        [Test]        
+        public void ValidateUserTest_should_return_false_if_username_is_null_or_empty()
         {
             using (var store = NewInMemoryStore())
             {
@@ -269,8 +268,8 @@ namespace RavenDBMembership.Tests
                 provider.DocumentStore = store;
 
                 //Act and Assert
-                Assert.True(provider.ValidateUser("", ""));
-                Assert.True(provider.ValidateUser(null,null));
+                Assert.IsFalse(provider.ValidateUser("", ""));
+                Assert.IsFalse(provider.ValidateUser(null,null));
             }
         }
 
