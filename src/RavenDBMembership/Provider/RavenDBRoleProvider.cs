@@ -17,10 +17,10 @@ namespace RavenDBMembership.Provider
 	public class RavenDBRoleProvider : RoleProvider
 	{
 		private const string ProviderName = "RavenDBRole";
-		private IDocumentStore _documentStore;
+		private static IDocumentStore _documentStore;
 
-        #if DEBUG
-		public IDocumentStore DocumentStore
+        
+		public static IDocumentStore DocumentStore
 		{
 			get
 			{
@@ -28,11 +28,10 @@ namespace RavenDBMembership.Provider
 				{
 					throw new NullReferenceException("The DocumentStore is not set. Please set the DocumentStore or make sure that the Common Service Locator can find the IDocumentStore and call Initialize on this provider.");
 				}
-				return this._documentStore;
+				return _documentStore;
 			}
-			set { this._documentStore = value; }
-		}
-        #endif
+			set { _documentStore = value; }
+		}        
 
 		public override void Initialize(string name, NameValueCollection config)
 		{
@@ -85,7 +84,7 @@ namespace RavenDBMembership.Provider
             //    var locator = ServiceLocator.Current;
             //    if (locator != null)
             //    {
-            //        this.DocumentStore = locator.GetInstance<IDocumentStore>();
+            //        DocumentStore = locator.GetInstance<IDocumentStore>();
             //    }
             //}
             //catch (NullReferenceException) // Swallow Nullreference expection that occurs when there is no current service locator.
@@ -106,7 +105,7 @@ namespace RavenDBMembership.Provider
 			{
 				return;
 			}
-			using (var session = this.DocumentStore.OpenSession())
+			using (var session = DocumentStore.OpenSession())
 			{
 				try
 				{
@@ -115,7 +114,7 @@ namespace RavenDBMembership.Provider
 					{
 						users = users.WhereEquals("Username", username, true);
 					}
-					users = users.CloseSubclause().AndAlso().WhereEquals("ApplicationName", this.ApplicationName, true);
+					users = users.CloseSubclause().AndAlso().WhereEquals("ApplicationName", ApplicationName, true);
 
 					var usersAsList = users.ToList();
 					var roles = session.Advanced.LuceneQuery<Role>().OpenSubclause();
@@ -123,7 +122,7 @@ namespace RavenDBMembership.Provider
 					{
 						roles = roles.WhereEquals("Name", roleName, true);
 					}
-					roles = roles.CloseSubclause().AndAlso().WhereEquals("ApplicationName", this.ApplicationName);
+					roles = roles.CloseSubclause().AndAlso().WhereEquals("ApplicationName", ApplicationName);
 
 					var roleIds = roles.Select(r => r.Id).ToList();
 					foreach (var roleId in roleIds)
@@ -146,12 +145,12 @@ namespace RavenDBMembership.Provider
 
 		public override void CreateRole(string roleName)
 		{
-			using (var session = this.DocumentStore.OpenSession())
+			using (var session = DocumentStore.OpenSession())
 			{
 				try
 				{
 					var role = new Role(roleName, null);
-					role.ApplicationName = this.ApplicationName;
+					role.ApplicationName = ApplicationName;
 
 					session.Store(role);
 					session.SaveChanges();
@@ -167,12 +166,12 @@ namespace RavenDBMembership.Provider
 
 		public override bool DeleteRole(string roleName, bool throwOnPopulatedRole)
 		{
-			using (var session = this.DocumentStore.OpenSession())
+			using (var session = DocumentStore.OpenSession())
 			{
 				try
 				{
 					var role = (from r in session.Query<Role>()
-							   where r.Name == roleName && r.ApplicationName == this.ApplicationName
+							   where r.Name == roleName && r.ApplicationName == ApplicationName
 							   select r).SingleOrDefault();
 					if (role != null)
 					{
@@ -205,11 +204,11 @@ namespace RavenDBMembership.Provider
 
 		public override string[] FindUsersInRole(string roleName, string usernameToMatch)
 		{
-			using (var session = this.DocumentStore.OpenSession())
+			using (var session = DocumentStore.OpenSession())
 			{
 				// Get role first
 				var role = (from r in session.Query<Role>()
-							where r.Name == roleName && r.ApplicationName == this.ApplicationName
+							where r.Name == roleName && r.ApplicationName == ApplicationName
 							select r).SingleOrDefault();
 				if (role != null)
 				{
@@ -225,10 +224,10 @@ namespace RavenDBMembership.Provider
 
 		public override string[] GetAllRoles()
 		{
-			using (var session = this.DocumentStore.OpenSession())
+			using (var session = DocumentStore.OpenSession())
 			{
 				var roles = (from r in session.Query<Role>()
-							where r.ApplicationName == this.ApplicationName
+							where r.ApplicationName == ApplicationName
 							select r).ToList();
 				return roles.Select(r => r.Name).ToArray();
 			}
@@ -236,10 +235,10 @@ namespace RavenDBMembership.Provider
 
 		public override string[] GetRolesForUser(string username)
 		{
-			using (var session = this.DocumentStore.OpenSession())
+			using (var session = DocumentStore.OpenSession())
 			{
 				var user = (from u in session.Query<User>()
-							where u.Username == username && u.ApplicationName == this.ApplicationName
+							where u.Username == username && u.ApplicationName == ApplicationName
 							select u).SingleOrDefault();
 				if (user.Roles.Any())
 				{
@@ -252,10 +251,10 @@ namespace RavenDBMembership.Provider
 
 		public override string[] GetUsersInRole(string roleName)
 		{
-			using (var session = this.DocumentStore.OpenSession())
+			using (var session = DocumentStore.OpenSession())
 			{
 				var role = (from r in session.Query<Role>()
-							where r.Name == roleName && r.ApplicationName == this.ApplicationName
+							where r.Name == roleName && r.ApplicationName == ApplicationName
 							select r).SingleOrDefault();
 				if (role != null)
 				{
@@ -270,15 +269,15 @@ namespace RavenDBMembership.Provider
 
 		public override bool IsUserInRole(string username, string roleName)
 		{
-			using (var session = this.DocumentStore.OpenSession())
+			using (var session = DocumentStore.OpenSession())
 			{
 				var user = session.Query<User>()
-					.Where(u => u.Username == username && u.ApplicationName == this.ApplicationName)
+					.Where(u => u.Username == username && u.ApplicationName == ApplicationName)
 					.SingleOrDefault();
 				if (user != null)
 				{
 					var role = (from r in session.Query<Role>()
-								where r.Name == roleName && r.ApplicationName == this.ApplicationName
+								where r.Name == roleName && r.ApplicationName == ApplicationName
 								select r).SingleOrDefault();
 					if (role != null)
 					{
@@ -295,7 +294,7 @@ namespace RavenDBMembership.Provider
 			{
 				return;
 			}
-			using (var session = this.DocumentStore.OpenSession())
+			using (var session = DocumentStore.OpenSession())
 			{
 				try
 				{
@@ -304,7 +303,7 @@ namespace RavenDBMembership.Provider
 					{
 						users = users.WhereEquals("Username", username, true);
 					}
-					users = users.CloseSubclause().AndAlso().WhereEquals("ApplicationName", this.ApplicationName, true);
+					users = users.CloseSubclause().AndAlso().WhereEquals("ApplicationName", ApplicationName, true);
 
 					var usersAsList = users.ToList();
 					var roles = session.Advanced.LuceneQuery<Role>().OpenSubclause();
@@ -312,7 +311,7 @@ namespace RavenDBMembership.Provider
 					{
 						roles = roles.WhereEquals("Name", roleName, true);
 					}
-					roles = roles.CloseSubclause().AndAlso().WhereEquals("ApplicationName", this.ApplicationName);
+					roles = roles.CloseSubclause().AndAlso().WhereEquals("ApplicationName", ApplicationName);
 
 					var roleIds = roles.Select(r => r.Id).ToList();
 					foreach (var roleId in roleIds)
@@ -336,7 +335,7 @@ namespace RavenDBMembership.Provider
 
 		public override bool RoleExists(string roleName)
 		{
-			using (var session = this.DocumentStore.OpenSession())
+			using (var session = DocumentStore.OpenSession())
 			{
 				return session.Query<Role>().Any(r => r.Name == roleName);
 			}

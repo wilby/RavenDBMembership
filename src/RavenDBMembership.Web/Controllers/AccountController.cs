@@ -286,7 +286,7 @@ namespace RavenDBMembership.Web.Controllers
                 
                 return RedirectToAction("ResetPasswordSuccess");
             }
-            catch(MembershipPasswordException e) {
+            catch(MembershipPasswordException) {
                 ModelState.AddModelError("PasswordQuestionAnswer", "The answer is incorrect");
                 return View(model);
             }

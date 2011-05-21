@@ -10,7 +10,14 @@ namespace RavenDBMembership.Tests
 {
     [TestFixture]
 	public class RoleTests : InMemoryStoreTestcase
-	{
+	{  
+        [SetUp]
+        public void Setup() {
+            RavenDBRoleProvider.DocumentStore = null;
+        }
+
+
+
 		[Test]
 		public void StoreRole()
 		{
@@ -105,7 +112,7 @@ namespace RavenDBMembership.Tests
 				Thread.Sleep(500);
 
 				var provider = new RavenDBRoleProvider();
-				provider.DocumentStore = store;
+				RavenDBRoleProvider.DocumentStore = store;
 				provider.ApplicationName = appName;
 				Assert.True(provider.RoleExists("TheRole"));
 			}
@@ -133,7 +140,7 @@ namespace RavenDBMembership.Tests
 				Thread.Sleep(500);
 
 				var provider = new RavenDBRoleProvider();
-				provider.DocumentStore = store;
+				RavenDBRoleProvider.DocumentStore = store;
 				provider.AddUsersToRoles(new [] { user.Username }, new [] { "Role 1", "Role 2" });
 
 				Assert.True(provider.IsUserInRole(user.Username, "Role 1"));
@@ -163,7 +170,7 @@ namespace RavenDBMembership.Tests
 				Thread.Sleep(500);
 
 				var provider = new RavenDBRoleProvider();
-				provider.DocumentStore = store;
+				RavenDBRoleProvider.DocumentStore = store;
 				provider.AddUsersToRoles(new [] { user.Username }, new [] { "Role 1", "Role 2" });
 
 				Assert.True(provider.IsUserInRole(user.Username, "Role 1"));
