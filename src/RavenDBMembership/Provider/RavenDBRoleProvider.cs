@@ -10,6 +10,7 @@ using System.IO;
 using System.Configuration;
 using System.Configuration.Provider;
 using Raven.Client.Document;
+using Raven.Client.Client;
 
 namespace RavenDBMembership.Provider
 {
@@ -43,18 +44,34 @@ namespace RavenDBMembership.Provider
                 config["description"] = "An Asp.Net membership provider for the RavenDB document database.";
 
             if (_documentStore == null)
-            {
+            {                
                 string conString = ConfigurationManager.ConnectionStrings[
                     config["connectionStringName"]].ConnectionString;
+                
                 if (string.IsNullOrEmpty(conString))
                     throw new ProviderException("The connection string name must be set.");
-                _documentStore = new DocumentStore()
+                if (string.IsNullOrEmpty(config["enableEmbeddableDocumentStore"]))
+                    throw new ProviderException("RavenDB can run as a service or embedded mode, you must set enableEmbeddableDocumentStore in the web.config.");
+
+                bool embeddedStore = Convert.ToBoolean(config["enableEmbeddableDocumentStore"]);
+
+                if (embeddedStore)
                 {
-                    ConnectionStringName =
-                        config["connectionStringName"]
-                };
-                _documentStore.Initialize();
-                _documentStore.OpenSession();
+                    _documentStore = new EmbeddableDocumentStore()
+                    {
+                        ConnectionStringName =
+                            config["connectionStringName"]
+                    };
+                }
+                else
+                {
+                    _documentStore = new DocumentStore()
+                    {
+                        ConnectionStringName =
+                            config["connectionStringName"]
+                    };
+                }
+                _documentStore.Initialize();                
             }
 
             ApplicationName = string.IsNullOrEmpty(config["applicationName"]) ? System.Web.Hosting.HostingEnvironment.ApplicationVirtualPath : config["applicationName"];

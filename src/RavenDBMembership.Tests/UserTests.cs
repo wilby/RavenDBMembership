@@ -14,6 +14,7 @@ using Raven.Client;
 using Raven.Client.Client;
 using RavenDBMembership.Provider;
 using Rhino.Mocks;
+using Raven.Client.Document;
 
 
 
@@ -222,6 +223,61 @@ namespace RavenDBMembership.Tests
                 //Best I could think to do, not sure its possible to test encrypted strings for actual encryption
                 Assert.AreNotEqual(fakeU.PasswordHash, createdUser.PasswordHash);
                 Assert.AreNotEqual(fakeU.PasswordAnswer, createdUser.PasswordAnswer);
+            }
+        }
+
+        [Test]
+        [ExpectedException("System.Configuration.Provider.ProviderException")]
+        public void EnableEmbeddableDocumentStore_should_throw_exception_if_not_set()
+        {
+            using (var store = NewInMemoryStore())
+            {
+                //Arrange                
+                var provider = new RavenDBMembershipProvider();
+                var config = CreateConfigFake();
+                config.Remove("enableEmbeddableDocumentStore");
+                
+                //Act
+                provider.Initialize("TestApp", config);
+                
+            }
+        }
+
+        [Test]        
+        public void EnableEmbeddableDocumentStore_should_be_of_type_EmbeddableDocumentStore()
+        {
+            using (var store = NewInMemoryStore())
+            {
+                //Arrange                
+                var provider = new RavenDBMembershipProvider();
+                var config = CreateConfigFake();
+                config["enableEmbeddableDocumentStore"] = "true";
+
+                //Act
+                provider.Initialize("TestApp", config);
+
+                //Asset 
+                Assert.IsTrue(provider.DocumentStore.GetType() == typeof(EmbeddableDocumentStore));
+
+            }
+        }
+
+        [Test]
+        public void EnableEmbeddableDocumentStore_should_be_of_type_DocumentStore()
+        {
+            using (var store = NewInMemoryStore())
+            {
+                //Arrange                
+                var provider = new RavenDBMembershipProvider();
+                var config = CreateConfigFake();
+                config["enableEmbeddableDocumentStore"] = "false";
+
+                //Act
+                provider.Initialize("TestApp", config);
+
+                //Asset 
+                Assert.IsTrue(provider.DocumentStore.GetType() == typeof(DocumentStore));
+
             }
         }
 
@@ -811,6 +867,7 @@ namespace RavenDBMembership.Tests
             config.Add("passwordAttemptWindow", "10");
             config.Add("passwordFormat", "Encrypted");
             config.Add("connectionStringName", "Server");
+            config.Add("enableEmbeddableDocumentStore", "true");
             return config; 
         }
 
