@@ -7,15 +7,14 @@ using System.Web.Routing;
 //using Castle.Windsor;
 using RavenDBMembership.Web.Infrastructure;
 //using Microsoft.Practices.ServiceLocation;
-using Raven.Client.Client;
 using Raven.Client;
 //using Castle.MicroKernel.Registration;
 using System.Reflection;
 using System.IO;
-using Raven.Http;
 using Castle.Windsor;
 using Microsoft.Practices.ServiceLocation;
 using Castle.MicroKernel.Registration;
+using Raven.Client.Embedded;
 
 namespace RavenDBMembership.Web
 {

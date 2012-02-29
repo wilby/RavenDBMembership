@@ -1,2 +1,8 @@
 ASP.NET Membership provider with RavenDB as backend. The Solution contains the
 provider, a unit test project and an ASP.NET MVC 3 sample app.
+
+This is a fork of the original project by Martijn Boland. The fork was created because Martijn's project was incomplete at the time. I spent the time completing the provider, during which I changed the unit test from xunit to nunit because I found xunit to be very slow in comparison.
+
+After I made my changes I emailed Martijn to see if he would like the updated code to distribute on his blog but at that time he already placed the code on github and had Frank Schwiet contributing to the project. I decided to offer my code as an alternative implementation because I was using it and I new it to be complete.
+
+-Wilby C. Jackson Jr.

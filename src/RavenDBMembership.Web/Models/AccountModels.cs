@@ -151,7 +151,7 @@ namespace RavenDBMembership.Web.Models
         [Required(ErrorMessage="You must confirm the question's answer.")]
         [DataType(DataType.Password)]
         [DisplayName("Answer Confirmation")]
-        [Compare("Password", ErrorMessage = "The question answer and confirmation answer do not match.")]
+        [Compare("PasswordQuestionAnswer", ErrorMessage = "The question answer and confirmation answer do not match.")]
         public string ConfirmPasswordQuestionAnswer { get; set; }
 	}
     
