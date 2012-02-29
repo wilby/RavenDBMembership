@@ -5,12 +5,13 @@ using System.Text;
 using System.Web.Security;
 using System.Collections.Specialized;
 using Raven.Client;
-using Raven.Client.Client;
 using System.IO;
 using System.Configuration;
 using System.Configuration.Provider;
 using Raven.Client.Document;
-using Raven.Client.Client;
+using Raven.Client.Linq;
+using Raven.Client.Embedded;
+
 
 namespace RavenDBMembership.Provider
 {
@@ -109,25 +110,19 @@ namespace RavenDBMembership.Provider
 			{
 				try
 				{
-					var users = session.Advanced.LuceneQuery<User>().OpenSubclause();
-					foreach (var username in usernames)
+                    var users = (from u in session.Query<User>()
+                                where u.Username.In(usernames)
+                                && u.ApplicationName == ApplicationName 
+                                select u).ToList();    
+                    
+                    var roles = (from r in session.Query<Role>()
+                                where r.Name.In(roleNames)
+                                && r.ApplicationName == ApplicationName
+                                select r.Id).ToList();
+					
+					foreach (var roleId in roles)
 					{
-						users = users.WhereEquals("Username", username, true);
-					}
-					users = users.CloseSubclause().AndAlso().WhereEquals("ApplicationName", ApplicationName, true);
-
-					var usersAsList = users.ToList();
-					var roles = session.Advanced.LuceneQuery<Role>().OpenSubclause();
-					foreach (var roleName in roleNames)
-					{
-						roles = roles.WhereEquals("Name", roleName, true);
-					}
-					roles = roles.CloseSubclause().AndAlso().WhereEquals("ApplicationName", ApplicationName);
-
-					var roleIds = roles.Select(r => r.Id).ToList();
-					foreach (var roleId in roleIds)
-					{
-						foreach (var user in usersAsList)
+						foreach (var user in users)
 						{
 							user.Roles.Add(roleId);
 						}

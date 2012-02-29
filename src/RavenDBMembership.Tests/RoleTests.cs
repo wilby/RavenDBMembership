@@ -5,12 +5,15 @@ using System.Text;
 using RavenDBMembership.Provider;
 using System.Threading;
 using NUnit.Framework;
+using Raven.Client.Document;
 
 namespace RavenDBMembership.Tests
 {
     [TestFixture]
 	public class RoleTests : InMemoryStoreTestcase
-	{  
+	{
+        private string _appName = "MyApplication";
+
         [SetUp]
         public void Setup() {
             RavenDBRoleProvider.DocumentStore = null;
@@ -37,7 +40,7 @@ namespace RavenDBMembership.Tests
 				{
 					var role = session.Query<Role>().FirstOrDefault();
 					Assert.NotNull(role);
-					Assert.AreEqual("raven/authorization/roles/users", role.Id);
+					Assert.AreEqual("authorization/roles/users", role.Id);
 				}
 			}
 		}
@@ -46,7 +49,7 @@ namespace RavenDBMembership.Tests
 		public void StoreRoleWithApplicationName()
 		{
 			var newRole = new Role("Users", null);
-			newRole.ApplicationName = "MyApplication";
+			newRole.ApplicationName = _appName;
 
 			using (var store = NewInMemoryStore())
 			{
@@ -62,7 +65,7 @@ namespace RavenDBMembership.Tests
 				{
 					var role = session.Query<Role>().FirstOrDefault();
 					Assert.NotNull(role);
-					Assert.AreEqual("raven/authorization/roles/myapplication/users", role.Id);
+					Assert.AreEqual("authorization/roles/myapplication/users", role.Id);
 				}
 			}
 		}
@@ -89,7 +92,7 @@ namespace RavenDBMembership.Tests
 					var roles = session.Query<Role>().ToList();
 					Assert.AreEqual(2, roles.Count);
 					var childRoleFromDb = roles.Single(r => r.ParentRoleId != null);
-					Assert.AreEqual("raven/authorization/roles/users/contributors", childRoleFromDb.Id);
+					Assert.AreEqual("authorization/roles/users/contributors", childRoleFromDb.Id);
 				}
 			}
 		}
@@ -122,11 +125,16 @@ namespace RavenDBMembership.Tests
 		public void AddUsersToRoles()
 		{
 			var roles = new Role[] { new Role("Role 1", null), new Role("Role 2", null), new Role("Role 3", null) };
+            for(int i = 0; i < roles.Length; i++) {
+                roles[i].ApplicationName = _appName;
+            }
 			var user = new User();
 			user.Username = "UserWithRole1AndRole2";
+            user.ApplicationName = _appName;
 
-			using (var store = NewInMemoryStore())
+            using (var store = NewInMemoryStore())
 			{
+                store.Initialize();
 				using (var session = store.OpenSession())
 				{
 					foreach (var role in roles)
@@ -137,10 +145,9 @@ namespace RavenDBMembership.Tests
 					session.SaveChanges();
 				}
 
-				Thread.Sleep(500);
-
 				var provider = new RavenDBRoleProvider();
 				RavenDBRoleProvider.DocumentStore = store;
+                provider.ApplicationName = _appName;
 				provider.AddUsersToRoles(new [] { user.Username }, new [] { "Role 1", "Role 2" });
 
 				Assert.True(provider.IsUserInRole(user.Username, "Role 1"));

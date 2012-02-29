@@ -11,10 +11,10 @@ using System.Web.Security;
 using System.Xml;
 using NUnit.Framework;
 using Raven.Client;
-using Raven.Client.Client;
 using RavenDBMembership.Provider;
 using Rhino.Mocks;
 using Raven.Client.Document;
+using Raven.Client.Embedded;
 
 
 
@@ -352,7 +352,8 @@ namespace RavenDBMembership.Tests
 
 			// Act
 			_provider.ChangePassword("martijn", "1234ABCD", "DCBA4321");
-				 
+            var o = -1;
+            var user = _provider.FindUsersByName("martijn", 0, 0 , out o);
 
 			// Assert
 			Assert.True(_provider.ValidateUser("martijn", "DCBA4321"));			
@@ -652,7 +653,6 @@ namespace RavenDBMembership.Tests
             //Arrange
             var config = CreateConfigFake();
             var user = CreateUserFake();
-
             _provider.Initialize(config["applicationName"], config);
             
             //Act

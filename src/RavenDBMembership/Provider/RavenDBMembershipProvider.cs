@@ -5,7 +5,6 @@ using System.Text;
 using System.Web.Security;
 using Raven.Client;
 using System.Collections.Specialized;
-using Raven.Client.Client;
 using System.IO;
 using System.Configuration;
 using System.Configuration.Provider;
@@ -13,7 +12,8 @@ using Raven.Client.Document;
 using System.Web.Configuration;
 using System.Diagnostics;
 using System.Web;
-using Raven.Client.Client;
+using Raven.Client.Embedded;
+
 
 namespace RavenDBMembership.Provider
 {
