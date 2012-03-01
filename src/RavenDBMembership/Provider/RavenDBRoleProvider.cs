@@ -235,10 +235,11 @@ namespace RavenDBMembership.Provider
 				var user = (from u in session.Query<User>()
 							where u.Username == username && u.ApplicationName == ApplicationName
 							select u).SingleOrDefault();
-				if (user.Roles.Any(x => !string.IsNullOrEmpty(x)))
+				
+                if (user.Roles.Count() != 0)
 				{
-					var dbRoles = session.Query<Role>().ToList();
-					return dbRoles.Where(r => user.Roles.Any(x => x == r.Id)).Select(r => r.Name).ToArray();
+                    var dbRoles = session.Query<Role>().Where(x => x.Id.In(user.Roles));
+					return dbRoles.Select(r => r.Name).ToArray();
 				}
 				return new string[0];
 			}
@@ -254,7 +255,7 @@ namespace RavenDBMembership.Provider
 				if (role != null)
 				{
 					var usernames = from u in session.Query<User>()
-									where u.Roles.Contains(role.Id)
+									where u.Roles.Any( x => x == role.Id)
 									select u.Username;
 					return usernames.ToArray();
 				}
