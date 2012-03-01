@@ -6,3 +6,8 @@ This is a fork of the original project by Martijn Boland. The fork was created b
 After I made my changes I emailed Martijn to see if he would like the updated code to distribute on his blog but at that time he already placed the code on github and had Frank Schwiet contributing to the project. I decided to offer my code as an alternative implementation because I was using it and I new it to be complete.
 
 -Wilby C. Jackson Jr.
+
+
+02/29/2012
+Upgraded RavenDB to version 616. Had to remove raven from the id schema. This will break any existing applictions that have been using previous versions. RavenDB was updated which made the auto id's case sensitive and removed support for Contains Linq method.
+

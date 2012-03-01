@@ -204,12 +204,12 @@ namespace RavenDBMembership.Provider
 				// Get role first
 				var role = (from r in session.Query<Role>()
 							where r.Name == roleName && r.ApplicationName == ApplicationName
-							select r).SingleOrDefault();
+							select r).FirstOrDefault();
 				if (role != null)
 				{
 					// Find users
 					var users = from u in session.Query<User>()
-								where u.Roles.Contains(role.Id) && u.Username.Contains(usernameToMatch)
+								where u.Roles.Any(x => x == role.Id) && u.Username == usernameToMatch
 								select u.Username;
 					return users.ToArray();
 				}
@@ -235,10 +235,10 @@ namespace RavenDBMembership.Provider
 				var user = (from u in session.Query<User>()
 							where u.Username == username && u.ApplicationName == ApplicationName
 							select u).SingleOrDefault();
-				if (user.Roles.Any())
+				if (user.Roles.Any(x => !string.IsNullOrEmpty(x)))
 				{
 					var dbRoles = session.Query<Role>().ToList();
-					return dbRoles.Where(r => user.Roles.Contains(r.Id)).Select(r => r.Name).ToArray();
+					return dbRoles.Where(r => user.Roles.Any(x => x == r.Id)).Select(r => r.Name).ToArray();
 				}
 				return new string[0];
 			}
@@ -268,15 +268,16 @@ namespace RavenDBMembership.Provider
 			{
 				var user = session.Query<User>()
 					.Where(u => u.Username == username && u.ApplicationName == ApplicationName)
-					.SingleOrDefault();
+					.FirstOrDefault();
+
 				if (user != null)
 				{
 					var role = (from r in session.Query<Role>()
 								where r.Name == roleName && r.ApplicationName == ApplicationName
-								select r).SingleOrDefault();
+								select r.Id).FirstOrDefault();
 					if (role != null)
 					{
-						return user.Roles.Contains(role.Id);
+						return user.Roles.Any(x => x == role);
 					}
 				}
 				return false;
@@ -293,25 +294,18 @@ namespace RavenDBMembership.Provider
 			{
 				try
 				{
-					var users = session.Advanced.LuceneQuery<User>().OpenSubclause();
-					foreach (var username in usernames)
-					{
-						users = users.WhereEquals("Username", username, true);
-					}
-					users = users.CloseSubclause().AndAlso().WhereEquals("ApplicationName", ApplicationName, true);
+                    var users = (from u in session.Query<User>()
+                                 where u.Username.In(usernames) && u.ApplicationName == ApplicationName
+                                 select u).ToList();
 
-					var usersAsList = users.ToList();
-					var roles = session.Advanced.LuceneQuery<Role>().OpenSubclause();
-					foreach (var roleName in roleNames)
+                    var roles = (from r in session.Query<Role>()
+                                 where r.Name.In(roleNames) && r.ApplicationName == ApplicationName
+                                 select r.Id).ToList();
+                        
+                        
+					foreach (var roleId in roles)
 					{
-						roles = roles.WhereEquals("Name", roleName, true);
-					}
-					roles = roles.CloseSubclause().AndAlso().WhereEquals("ApplicationName", ApplicationName);
-
-					var roleIds = roles.Select(r => r.Id).ToList();
-					foreach (var roleId in roleIds)
-					{
-						var usersWithRole = usersAsList.Where(u => u.Roles.Contains(roleId));
+                        var usersWithRole = users.Where(u => u.Roles.Any(x => x == roleId));
 						foreach (var user in usersWithRole)
 						{
 							user.Roles.Remove(roleId);
