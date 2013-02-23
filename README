@@ -11,3 +11,9 @@ After I made my changes I emailed Martijn to see if he would like the updated co
 02/29/2012
 Upgraded RavenDB to version 616. Had to remove raven from the id schema. This will break any existing applictions that have been using previous versions. RavenDB was updated which made the auto id's case sensitive and removed support for Contains Linq method.
 
+02/22/2013
+Fixed some reference and complation issues from the last merge.
+
+Updated the connection string to utilize a webauth db in the sample app. It was using the system database.
+
+Updated Raven client to v2.0.2261
