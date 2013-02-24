@@ -265,10 +265,9 @@ namespace RavenDBMembership.Tests
             Assert.IsTrue(RavenDBMembershipProvider.DocumentStore.GetType() == typeof(DocumentStore));
         }
 
-        [Test]
-        //In order for this test to pass, you must copy the machine key element from the app.config (actually generate your own) in this test project
-        //to the machine.config in the appropriate framework version. This is so that algorithm info grabbed by the 
-        //membership provider matches what is in this test. You cannot use AutoGen for the validation and decryption keys.
+        [Test(Description=@"In order for this test to pass, you must copy the machine key element from the app.config in this test project
+        to the machine.config in the appropriate framework version. This is so that algorithm info grabbed by the 
+        membership provider matches what is in this test. You cannot use AutoGen for the validation and decryption keys.")]
         public void CreatedUser_should_have_hashed_password_and_password_answer()
         {            
             //Arrange
@@ -292,6 +291,7 @@ namespace RavenDBMembership.Tests
             string expectedAnswer = PasswordUtil.HashPassword(fakeU.PasswordAnswer, createdUser.PasswordSalt, "HMACSHA256", _validationKey);
                 
             //Assert
+            
             Assert.AreEqual(expected, createdUser.PasswordHash);
             Assert.AreEqual(expectedAnswer, createdUser.PasswordAnswer);               
              
@@ -599,8 +599,8 @@ namespace RavenDBMembership.Tests
             }
             using (var session = RavenDBMembershipProvider.DocumentStore.OpenSession())
             {
-                updatedUser = session.Query<User>().Where(x => x.Id == memUser.ProviderUserKey)
-                    .SingleOrDefault();
+                updatedUser = session.Load<User>(new string[] { memUser.ProviderUserKey.ToString() }).FirstOrDefault();
+                    
             }
 
             //Assert

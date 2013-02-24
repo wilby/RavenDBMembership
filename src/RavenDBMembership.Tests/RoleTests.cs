@@ -42,7 +42,7 @@ namespace RavenDBMembership.Tests
 				{
 					var role = session.Query<Role>().FirstOrDefault();
 					Assert.NotNull(role);
-					Assert.AreEqual("authorization/roles/users", role.Id);
+					Assert.AreEqual("authorization/roles/users", role.Id.ToLower().ToLower());
 				}
 			}
 		}
@@ -67,7 +67,7 @@ namespace RavenDBMembership.Tests
 				{
 					var role = session.Query<Role>().FirstOrDefault();
 					Assert.NotNull(role);
-					Assert.AreEqual("authorization/roles/myapplication/users", role.Id);
+					Assert.AreEqual("authorization/roles/myapplication/users", role.Id.ToLower());
 				}
 			}
 		}
@@ -94,7 +94,7 @@ namespace RavenDBMembership.Tests
 					var roles = session.Query<Role>().ToList();
 					Assert.AreEqual(2, roles.Count);
 					var childRoleFromDb = roles.Single(r => r.ParentRoleId != null);
-					Assert.AreEqual("authorization/roles/users/contributors", childRoleFromDb.Id);
+					Assert.AreEqual("authorization/roles/users/contributors", childRoleFromDb.Id.ToLower());
 				}
 			}
 		}
@@ -154,8 +154,8 @@ namespace RavenDBMembership.Tests
                 using (var session = store.OpenSession())
                 {
                     var u = session.Query<User>().Where(x => x.Username == user.Username && x.ApplicationName == user.ApplicationName).FirstOrDefault();
-                    Assert.True(u.Roles.Any(x => x.Contains("role 1")));
-                    Assert.False(u.Roles.Any(x => x.Contains("role 3")));
+                    Assert.True(u.Roles.Any(x => x.ToLower().Contains("role 1")));
+                    Assert.False(u.Roles.Any(x => x.ToLower().Contains("role 3")));
 
                 }
 
@@ -180,7 +180,7 @@ namespace RavenDBMembership.Tests
 					{
                         role.ApplicationName = _appName;
 						session.Store(role);
-                        user.Roles.Add(role.Id.ToLower());
+                        user.Roles.Add(role.Id.ToLower().ToLower());
 					}
 					session.Store(user);
 					session.SaveChanges();
@@ -197,8 +197,8 @@ namespace RavenDBMembership.Tests
                 using (var session = store.OpenSession())
                 {
                     var u = session.Query<User>().Where(x => x.Username == _testUserName && x.ApplicationName == _appName).FirstOrDefault();
-                    Assert.False(u.Roles.Any(x => x.Contains("role 1")));
-                    Assert.True(u.Roles.Any(x => x.Contains("role 2")));
+                    Assert.False(u.Roles.Any(x => x.ToLower() == "role 1"));
+                    Assert.True(u.Roles.Any(x => x.ToLower() != "role 2"));
                 }
 			}
 		}
