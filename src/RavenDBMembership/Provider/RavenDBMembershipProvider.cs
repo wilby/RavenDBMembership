@@ -418,7 +418,7 @@ namespace RavenDBMembership.Provider
                     {
                         throw new HttpException("The user to reset the password for could not be found.");
                     }
-                    if (user.PasswordAnswer != EncodePassword(answer, user.PasswordSalt))
+                    if (RequiresQuestionAndAnswer && user.PasswordAnswer != EncodePassword(answer, user.PasswordSalt))
                     {
                         user.FailedPasswordAttempts++;
                         session.SaveChanges();
@@ -727,42 +727,6 @@ namespace RavenDBMembership.Provider
 
         #endregion
 
-        //#region RavenWrapper
-        //private static class RavenWrapper {
-        //    private static IDocumentStore _docStore;
-        //    private static object syncLock = new object();        
-
-        //    //private constructor forces the use of Initialize
-        //    private IDocumentStore Initialize(string connectionStringName, bool embedded)
-        //    {
-        //        if (_docStore == null)
-        //        {
-        //            lock (syncLock)
-        //            {
-        //                if (_docStore == null)
-        //                {
-        //                    if (embedded)
-        //                    {
-        //                        _docStore = new EmbeddableDocumentStore()
-        //                        {
-        //                            ConnectionStringName = connectionStringName
-        //                        };
-        //                    }
-        //                    else
-        //                    {
-        //                        _docStore = new DocumentStore()
-        //                        {
-        //                            ConnectionStringName = connectionStringName
-        //                        };
-        //                    }
-        //                    _docStore.Conventions.IdentityPartsSeparator = "-";
-        //                    _docStore.Initialize();                        
-        //                }
-        //            }
-        //        }
-        //        return _docStore;
-        //    }
-        //}
-        //#endregion
+        
     }
 }

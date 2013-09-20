@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Wcjj.RavenDBMembership</id>
+	<title>Asp.Net Membership and Role Provider for RavenDB</title>
+    <version>2.0.2261</version>
+    <authors>Wilby C. Jackson Jr.</authors>
+    <owners>Wilby C. Jackson Jr.</owners>
+    <licenseUrl>http://opensource.org/licenses/mit-license.php</licenseUrl>
+    <projectUrl>https://github.com/wilby/RavenDBMembership</projectUrl>    
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>
+		Asp.Net Membership and Role Provider for RavenDB 2.0
+	</description>
+    <releaseNotes>
+		Initial and only Release for RavenDB 2.0
+	</releaseNotes>
+    <copyright>Copyright Wilby C. Jackson Jr. 2013</copyright>
+    <tags>RavenDB AspNet Membership Role Provider</tags>
+    <dependencies>
+		<group>
+			<dependency id="RavenDB.Client" version="2.0.2261" />
+			<dependency id="RavenDB.Embedded" version="2.0.2261" />
+		</group>
+    </dependencies>
+  </metadata>
+  <files>
+	<file src="readme.txt" target="" />
+	<file src="..\src\RavenDBMembership\bin\Release\RavenDBMembership.dll" target="lib\net40" />
+	<file src="..\src\RavenDBMembership\bin\Release\RavenDBMembership.dll" target="lib\net45" />
+  </files>
+</package>
