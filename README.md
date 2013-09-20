@@ -8,7 +8,7 @@ After I made my changes I emailed Martijn to see if he would like the updated co
 
 __Wilby C. Jackson Jr.__
 
-## Nuget Packages
+## NuGet Packages
 
 ### RavenDB 2.0
 - Install-Package Wcjj.RavenDBMembership -Version 2.0.2261
@@ -24,12 +24,11 @@ __Wilby C. Jackson Jr.__
 - Fixed a bug in ResetPassword that wasn't checking to see if QuestionAndAnswer were required.
 - Directory tree cleanup
 
+### 02/22/2013
+- Fixed some reference and complation issues from the last merge.
+- Updated the connection string to utilize a webauth db in the sample app. It was using the system database.
+- Updated Raven client to v2.0.2261
+
 ### 02/29/2012
 Upgraded RavenDB to version 616. Had to remove raven from the id schema. This will break any existing applictions that have been using previous versions. RavenDB was updated which made the auto id's case sensitive and removed support for Contains Linq method.
 
-### 02/22/2013
-Fixed some reference and complation issues from the last merge.
-
-Updated the connection string to utilize a webauth db in the sample app. It was using the system database.
-
-Updated Raven client to v2.0.2261
