@@ -15,6 +15,12 @@
             Subscribe to change notifications from the server
             </summary>
         </member>
+        <member name="M:Raven.Client.Embedded.EmbeddableDocumentStore.CreateDatabaseChanges(System.String)">
+            <summary>
+            Creates embeddable instance of document changes
+            </summary>
+            <param name="database">Database name is ignored in embeddable document store</param>
+        </member>
         <member name="M:Raven.Client.Embedded.EmbeddableDocumentStore.Dispose">
             <summary>
             Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -98,10 +104,16 @@
             The embedded database command for bulk inserts
             </summary>
         </member>
-        <member name="M:Raven.Client.Embedded.EmbeddedBulkInsertOperation.#ctor(Raven.Database.DocumentDatabase,Raven.Abstractions.Data.BulkInsertOptions)">
+        <member name="M:Raven.Client.Embedded.EmbeddedBulkInsertOperation.#ctor(Raven.Database.DocumentDatabase,Raven.Abstractions.Data.BulkInsertOptions,Raven.Client.Changes.IDatabaseChanges)">
             <summary>
             Create new instance of this class
             </summary>
+        </member>
+        <member name="M:Raven.Client.Embedded.EmbeddedBulkInsertOperation.DisposeAsync">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:Raven.Client.Embedded.EmbeddedBulkInsertOperation.Dispose">
             <summary>
@@ -111,6 +123,28 @@
         <member name="M:Raven.Client.Embedded.EmbeddedBulkInsertOperation.Write(System.String,Raven.Json.Linq.RavenJObject,Raven.Json.Linq.RavenJObject)">
             <summary>
             Write the specified data to the database
+            </summary>
+        </member>
+        <member name="M:Raven.Client.Embedded.EmbeddedBulkInsertOperation.OnNext(Raven.Abstractions.Data.BulkInsertChangeNotification)">
+            <summary>
+            Provides the observer with new data.
+            </summary>
+            <param name="value">The current notification information.</param>
+        </member>
+        <member name="M:Raven.Client.Embedded.EmbeddedBulkInsertOperation.OnError(System.Exception)">
+            <summary>
+            Notifies the observer that the provider has experienced an error condition.
+            </summary>
+            <param name="error">An object that provides additional information about the error.</param>
+        </member>
+        <member name="M:Raven.Client.Embedded.EmbeddedBulkInsertOperation.OnCompleted">
+            <summary>
+            Notifies the observer that the provider has finished sending push-based notifications.
+            </summary>
+        </member>
+        <member name="P:Raven.Client.Embedded.EmbeddedBulkInsertOperation.OperationId">
+            <summary>
+            Operation Id
             </summary>
         </member>
         <member name="E:Raven.Client.Embedded.EmbeddedBulkInsertOperation.Report">
@@ -123,12 +157,12 @@
              Expose the set of operations by the RavenDB server
             </summary>
         </member>
-        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.#ctor(Raven.Database.DocumentDatabase,Raven.Client.Document.DocumentConvention,System.Nullable{System.Guid})">
+        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.#ctor(Raven.Database.DocumentDatabase,Raven.Client.Document.DocumentConvention,System.Nullable{System.Guid},Raven.Client.Listeners.IDocumentConflictListener[])">
             <summary>
              Create a new instance
             </summary>
         </member>
-        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.StartsWith(System.String,System.String,System.Int32,System.Int32,System.Boolean)">
+        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.StartsWith(System.String,System.String,System.Int32,System.Int32,System.Boolean,System.String)">
             <summary>
             Gets documents for the specified key prefix
             </summary>
@@ -140,7 +174,16 @@
             <param name="key">The key.</param>
             <returns></returns>
         </member>
-        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.Put(System.String,System.Nullable{System.Guid},Raven.Json.Linq.RavenJObject,Raven.Json.Linq.RavenJObject)">
+        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.Get(System.String,System.String,System.Collections.Generic.Dictionary{System.String,Raven.Json.Linq.RavenJToken})">
+            <summary>
+            Retrieves the document with the specified key and performs the transform operation specified on that document
+            </summary>
+            <param name="key">The key</param>
+            <param name="transformer">The transformer to use</param>
+            <param name="queryInputs">Inputs to the transformer</param>
+            <returns></returns>
+        </member>
+        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.Put(System.String,Raven.Abstractions.Data.Etag,Raven.Json.Linq.RavenJObject,Raven.Json.Linq.RavenJObject)">
             <summary>
             Puts the document with the specified key in the database
             </summary>
@@ -150,14 +193,14 @@
             <param name="metadata">The metadata.</param>
             <returns></returns>
         </member>
-        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.Delete(System.String,System.Nullable{System.Guid})">
+        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.Delete(System.String,Raven.Abstractions.Data.Etag)">
             <summary>
             Deletes the document with the specified key.
             </summary>
             <param name="key">The key.</param>
             <param name="etag">The etag.</param>
         </member>
-        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.PutAttachment(System.String,System.Nullable{System.Guid},System.IO.Stream,Raven.Json.Linq.RavenJObject)">
+        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.PutAttachment(System.String,Raven.Abstractions.Data.Etag,System.IO.Stream,Raven.Json.Linq.RavenJObject)">
             <summary>
             Puts the attachment with the specified key
             </summary>
@@ -166,7 +209,7 @@
             <param name="data">The data.</param>
             <param name="metadata">The metadata.</param>
         </member>
-        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.UpdateAttachmentMetadata(System.String,System.Nullable{System.Guid},Raven.Json.Linq.RavenJObject)">
+        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.UpdateAttachmentMetadata(System.String,Raven.Abstractions.Data.Etag,Raven.Json.Linq.RavenJObject)">
             <summary>
             Updates just the attachment with the specified key's metadata
             </summary>
@@ -193,7 +236,7 @@
             <param name="key">The key.</param>
             <returns></returns>
         </member>
-        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.DeleteAttachment(System.String,System.Nullable{System.Guid})">
+        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.DeleteAttachment(System.String,Raven.Abstractions.Data.Etag)">
             <summary>
             Deletes the attachment with the specified key
             </summary>
@@ -221,6 +264,25 @@
             <param name="start">Paging start</param>
             <param name="pageSize">Size of the page.</param>
         </member>
+        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.GetTransformers(System.Int32,System.Int32)">
+            <summary>
+            Gets the transformers from the server
+            </summary>
+            <param name="start">Paging start</param>
+            <param name="pageSize">Size of the page.</param>
+        </member>
+        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.GetTransformer(System.String)">
+            <summary>
+            Gets the transformer definition for the specified name
+            </summary>
+            <param name="name">The name.</param>
+        </member>
+        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.DeleteTransformer(System.String)">
+            <summary>
+            Deletes the transformer.
+            </summary>
+            <param name="name">The name.</param>
+        </member>
         <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.ResetIndex(System.String)">
             <summary>
             Resets the specified index
@@ -239,6 +301,11 @@
             </summary>
             <param name="name">The name.</param>
             <param name="definition">The index def.</param>
+        </member>
+        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.PutTransformer(System.String,Raven.Abstractions.Indexing.TransformerDefinition)">
+            <summary>
+            Creates a transformer with the specified name, based on an transformer definition
+            </summary>
         </member>
         <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.PutIndex(System.String,Raven.Abstractions.Indexing.IndexDefinition,System.Boolean)">
             <summary>
@@ -278,18 +345,32 @@
             <param name="metadataOnly">Load just the document metadata</param>
             <param name="indexEntriesOnly">Include index entries</param>
         </member>
+        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.StreamQuery(System.String,Raven.Abstractions.Data.IndexQuery,Raven.Abstractions.Data.QueryHeaderInformation@)">
+            <summary>
+            Queries the specified index in the Raven flavored Lucene query syntax. Will return *all* results, regardless
+            of the number of items that might be returned.
+            </summary>
+        </member>
+        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.StreamDocs(Raven.Abstractions.Data.Etag,System.String,System.String,System.Int32,System.Int32,System.String)">
+            <summary>
+            Streams the documents by etag OR starts with the prefix and match the matches
+            Will return *all* results, regardless of the number of itmes that might be returned.
+            </summary>
+        </member>
         <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.DeleteIndex(System.String)">
             <summary>
             Deletes the index.
             </summary>
             <param name="name">The name.</param>
         </member>
-        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.Get(System.String[],System.String[],System.Boolean)">
+        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.Get(System.String[],System.String[],System.String,System.Collections.Generic.Dictionary{System.String,Raven.Json.Linq.RavenJToken},System.Boolean)">
             <summary>
             Gets the results for the specified ids.
             </summary>
             <param name="ids">The ids.</param>
             <param name="includes">The includes.</param>
+            <param name="transformer"></param>
+            <param name="queryInputs"></param>
             <param name="metadataOnly">Load just the document metadata</param>
             <returns></returns>
         </member>
@@ -310,24 +391,23 @@
             </summary>
             <param name="commandDatas">The command data.</param>
         </member>
-        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.Commit(System.Guid)">
+        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.Commit(System.String)">
             <summary>
             Commits the specified tx id.
             </summary>
             <param name="txId">The tx id.</param>
         </member>
-        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.Rollback(System.Guid)">
+        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.Rollback(System.String)">
             <summary>
             Rollbacks the specified tx id.
             </summary>
             <param name="txId">The tx id.</param>
         </member>
-        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.PromoteTransaction(System.Guid)">
+        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.PrepareTransaction(System.String)">
             <summary>
-            Promotes the transaction.
+            Prepares the transaction on the server.
             </summary>
-            <param name="fromTxId">From tx id.</param>
-            <returns></returns>
+            <param name="txId">The tx id.</param>
         </member>
         <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.With(System.Net.ICredentials)">
             <summary>
@@ -341,7 +421,7 @@
             Force the database commands to read directly from the master, unless there has been a failover.
             </summary>
         </member>
-        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.GetBulkInsertOperation(Raven.Abstractions.Data.BulkInsertOptions)">
+        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.GetBulkInsertOperation(Raven.Abstractions.Data.BulkInsertOptions,Raven.Client.Changes.IDatabaseChanges)">
             <summary>
             Get the low level  bulk insert operation
             </summary>
@@ -442,12 +522,30 @@
             <param name="start">Start index for paging</param>
             <param name="pageSize">Paging PageSize. If set, overrides Facet.MaxResults</param>
         </member>
+        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.GetFacets(System.String,Raven.Abstractions.Data.IndexQuery,System.Collections.Generic.List{Raven.Abstractions.Data.Facet},System.Int32,System.Nullable{System.Int32})">
+            <summary>
+            Using the given Index, calculate the facets as per the specified doc with the given start and pageSize
+            </summary>
+            <param name="index">Name of the index</param>
+            <param name="query">Query to build facet results</param>
+            <param name="facets">List of facets</param>
+            <param name="start">Start index for paging</param>
+            <param name="pageSize">Paging PageSize. If set, overrides Facet.MaxResults</param>
+        </member>
         <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.Patch(System.String,Raven.Abstractions.Data.PatchRequest[])">
             <summary>
             Sends a patch request for a specific document, ignoring the document's Etag
             </summary>
             <param name="key">Id of the document to patch</param>
             <param name="patches">Array of patch requests</param>
+        </member>
+        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.Patch(System.String,Raven.Abstractions.Data.PatchRequest[],System.Boolean)">
+            <summary>
+            Sends a patch request for a specific document, ignoring the document's Etag
+            </summary>
+            <param name="key">Id of the document to patch</param>
+            <param name="patches">Array of patch requests</param>
+            <param name="ignoreMissing">true if the patch request should ignore a missing document, false to throw DocumentDoesNotExistException</param>
         </member>
         <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.Patch(System.String,Raven.Abstractions.Data.ScriptedPatchRequest)">
             <summary>
@@ -456,7 +554,15 @@
             <param name="key">Id of the document to patch</param>
             <param name="patch">The patch request to use (using JavaScript)</param>
         </member>
-        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.Patch(System.String,Raven.Abstractions.Data.PatchRequest[],System.Nullable{System.Guid})">
+        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.Patch(System.String,Raven.Abstractions.Data.ScriptedPatchRequest,System.Boolean)">
+            <summary>
+            Sends a patch request for a specific document, ignoring the document's Etag
+            </summary>
+            <param name="key">Id of the document to patch</param>
+            <param name="patch">The patch request to use (using JavaScript)</param>
+            <param name="ignoreMissing">true if the patch request should ignore a missing document, false to throw DocumentDoesNotExistException</param>
+        </member>
+        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.Patch(System.String,Raven.Abstractions.Data.PatchRequest[],Raven.Abstractions.Data.Etag)">
             <summary>
             Sends a patch request for a specific document
             </summary>
@@ -464,13 +570,31 @@
             <param name="patches">Array of patch requests</param>
             <param name="etag">Require specific Etag [null to ignore]</param>
         </member>
-        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.Patch(System.String,Raven.Abstractions.Data.ScriptedPatchRequest,System.Nullable{System.Guid})">
+        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.Patch(System.String,Raven.Abstractions.Data.PatchRequest[],Raven.Abstractions.Data.PatchRequest[],Raven.Json.Linq.RavenJObject)">
+            <summary>
+            Sends a patch request for a specific document which may or may not currently exist
+            </summary>
+            <param name="key">Id of the document to patch</param>
+            <param name="patchesToExisting">Array of patch requests to apply to an existing document</param>
+            <param name="patchesToDefault">Array of patch requests to apply to a default document when the document is missing</param>
+            <param name="defaultMetadata">The metadata for the default document when the document is missing</param>
+        </member>
+        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.Patch(System.String,Raven.Abstractions.Data.ScriptedPatchRequest,Raven.Abstractions.Data.Etag)">
             <summary>
             Sends a patch request for a specific document, ignoring the document's Etag
             </summary>
             <param name="key">Id of the document to patch</param>
             <param name="patch">The patch request to use (using JavaScript)</param>
             <param name="etag">Require specific Etag [null to ignore]</param>
+        </member>
+        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.Patch(System.String,Raven.Abstractions.Data.ScriptedPatchRequest,Raven.Abstractions.Data.ScriptedPatchRequest,Raven.Json.Linq.RavenJObject)">
+            <summary>
+            Sends a patch request for a specific document which may or may not currently exist
+            </summary>
+            <param name="key">Id of the document to patch</param>
+            <param name="patchExisting">The patch request to use (using JavaScript) to an existing document</param>
+            <param name="patchDefault">The patch request to use (using JavaScript)  to a default document when the document is missing</param>
+            <param name="defaultMetadata">The metadata for the default document when the document is missing</param>
         </member>
         <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.DisableAllCaching">
             <summary>
@@ -485,6 +609,11 @@
         <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.NextIdentityFor(System.String)">
             <summary>
             Generate the next identity value from the server
+            </summary>
+        </member>
+        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.SeedIdentityFor(System.String,System.Int64)">
+            <summary>
+            Seeds the next identity value on the server
             </summary>
         </member>
         <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.UrlFor(System.String)">
@@ -536,11 +665,6 @@
             Gets or sets the operations headers.
             </summary>
             <value>The operations headers.</value>
-        </member>
-        <member name="P:Raven.Client.Embedded.EmbeddedDatabaseCommands.SupportsPromotableTransactions">
-            <summary>
-            It seems that we can't promote a transaction inside the same process
-            </summary>
         </member>
         <member name="P:Raven.Client.Embedded.EmbeddedDatabaseCommands.ProfilingInformation">
             <summary>

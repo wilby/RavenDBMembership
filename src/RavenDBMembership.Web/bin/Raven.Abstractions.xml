@@ -4,6 +4,113 @@
         <name>Raven.Abstractions</name>
     </assembly>
     <members>
+        <member name="T:Raven.Imports.Newtonsoft.Json.Serialization.DiagnosticsTraceWriter">
+            <summary>
+            Represents a trace writer that writes to the application's <see cref="T:System.Diagnostics.TraceListener"/> instances.
+            </summary>
+        </member>
+        <member name="T:Raven.Imports.Newtonsoft.Json.Serialization.ITraceWriter">
+            <summary>
+            Represents a trace writer.
+            </summary>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.Serialization.ITraceWriter.Trace(System.Diagnostics.TraceLevel,System.String,System.Exception)">
+            <summary>
+            Writes the specified trace level, message and optional exception.
+            </summary>
+            <param name="level">The <see cref="T:System.Diagnostics.TraceLevel"/> at which to write this trace.</param>
+            <param name="message">The trace message.</param>
+            <param name="ex">The trace exception. This parameter is optional.</param>
+        </member>
+        <member name="P:Raven.Imports.Newtonsoft.Json.Serialization.ITraceWriter.LevelFilter">
+            <summary>
+            Gets the <see cref="T:System.Diagnostics.TraceLevel"/> that will be used to filter the trace messages passed to the writer.
+            For example a filter level of <code>Info</code> will exclude <code>Verbose</code> messages and include <code>Info</code>,
+            <code>Warning</code> and <code>Error</code> messages.
+            </summary>
+            <value>The <see cref="T:System.Diagnostics.TraceLevel"/> that will be used to filter the trace messages passed to the writer.</value>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.Serialization.DiagnosticsTraceWriter.Trace(System.Diagnostics.TraceLevel,System.String,System.Exception)">
+            <summary>
+            Writes the specified trace level, message and optional exception.
+            </summary>
+            <param name="level">The <see cref="T:System.Diagnostics.TraceLevel"/> at which to write this trace.</param>
+            <param name="message">The trace message.</param>
+            <param name="ex">The trace exception. This parameter is optional.</param>
+        </member>
+        <member name="P:Raven.Imports.Newtonsoft.Json.Serialization.DiagnosticsTraceWriter.LevelFilter">
+            <summary>
+            Gets the <see cref="T:System.Diagnostics.TraceLevel"/> that will be used to filter the trace messages passed to the writer.
+            For example a filter level of <code>Info</code> will exclude <code>Verbose</code> messages and include <code>Info</code>,
+            <code>Warning</code> and <code>Error</code> messages.
+            </summary>
+            <value>
+            The <see cref="T:System.Diagnostics.TraceLevel"/> that will be used to filter the trace messages passed to the writer.
+            </value>
+        </member>
+        <member name="T:Raven.Imports.Newtonsoft.Json.Serialization.MemoryTraceWriter">
+            <summary>
+            Represents a trace writer that writes to memory. When the trace message limit is
+            reached then old trace messages will be removed as new messages are added.
+            </summary>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.Serialization.MemoryTraceWriter.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Raven.Imports.Newtonsoft.Json.Serialization.MemoryTraceWriter"/> class.
+            </summary>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.Serialization.MemoryTraceWriter.Trace(System.Diagnostics.TraceLevel,System.String,System.Exception)">
+            <summary>
+            Writes the specified trace level, message and optional exception.
+            </summary>
+            <param name="level">The <see cref="T:System.Diagnostics.TraceLevel"/> at which to write this trace.</param>
+            <param name="message">The trace message.</param>
+            <param name="ex">The trace exception. This parameter is optional.</param>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.Serialization.MemoryTraceWriter.GetTraceMessages">
+            <summary>
+            Returns an enumeration of the most recent trace messages.
+            </summary>
+            <returns>An enumeration of the most recent trace messages.</returns>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.Serialization.MemoryTraceWriter.ToString">
+            <summary>
+            Returns a <see cref="T:System.String"/> of the most recent trace messages.
+            </summary>
+            <returns>
+            A <see cref="T:System.String"/> of the most recent trace messages.
+            </returns>
+        </member>
+        <member name="P:Raven.Imports.Newtonsoft.Json.Serialization.MemoryTraceWriter.LevelFilter">
+            <summary>
+            Gets the <see cref="T:System.Diagnostics.TraceLevel"/> that will be used to filter the trace messages passed to the writer.
+            For example a filter level of <code>Info</code> will exclude <code>Verbose</code> messages and include <code>Info</code>,
+            <code>Warning</code> and <code>Error</code> messages.
+            </summary>
+            <value>
+            The <see cref="T:System.Diagnostics.TraceLevel"/> that will be used to filter the trace messages passed to the writer.
+            </value>
+        </member>
+        <member name="T:Raven.Imports.Newtonsoft.Json.StringEscapeHandling">
+            <summary>
+            Specifies how strings are escaped when writing JSON text.
+            </summary>
+        </member>
+        <member name="F:Raven.Imports.Newtonsoft.Json.StringEscapeHandling.Default">
+            <summary>
+            Only control characters (e.g. newline) are escaped.
+            </summary>
+        </member>
+        <member name="F:Raven.Imports.Newtonsoft.Json.StringEscapeHandling.EscapeNonAscii">
+            <summary>
+            All non-ASCII and control characters (e.g. newline) are escaped.
+            </summary>
+        </member>
+        <member name="F:Raven.Imports.Newtonsoft.Json.StringEscapeHandling.EscapeHtml">
+            <summary>
+            HTML (&lt;, &gt;, &amp;, &apos;, &quot;) and control characters (e.g. newline) are escaped.
+            </summary>
+        </member>
         <member name="T:Raven.Abstractions.Commands.ScriptedPatchCommandData">
             <summary>
              A single batch operation for a document EVAL (using a Javascript)
@@ -63,6 +170,12 @@
         <member name="P:Raven.Abstractions.Commands.ScriptedPatchCommandData.Patch">
             <summary>
             Gets or sets the ScriptedPatchRequest (using JavaScript) that is used to patch the document
+            </summary>
+            <value>The Script.</value>
+        </member>
+        <member name="P:Raven.Abstractions.Commands.ScriptedPatchCommandData.PatchIfMissing">
+            <summary>
+            Gets or sets the ScriptedPatchRequest (using JavaScript) that is used to patch a default document if the document is missing
             </summary>
             <value>The Script.</value>
         </member>
@@ -512,9 +625,16 @@
         </member>
         <member name="M:Raven.Imports.Newtonsoft.Json.JsonWriter.WriteToken(Raven.Imports.Newtonsoft.Json.JsonReader)">
             <summary>
+            Writes the current <see cref="T:Raven.Imports.Newtonsoft.Json.JsonReader"/> token and its children.
+            </summary>
+            <param name="reader">The <see cref="T:Raven.Imports.Newtonsoft.Json.JsonReader"/> to read the token from.</param>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.JsonWriter.WriteToken(Raven.Imports.Newtonsoft.Json.JsonReader,System.Boolean)">
+            <summary>
             Writes the current <see cref="T:Raven.Imports.Newtonsoft.Json.JsonReader"/> token.
             </summary>
             <param name="reader">The <see cref="T:Raven.Imports.Newtonsoft.Json.JsonReader"/> to read the token from.</param>
+            <param name="writeChildren">A flag indicating whether the current token's children should be written.</param>
         </member>
         <member name="M:Raven.Imports.Newtonsoft.Json.JsonWriter.WriteEnd(Raven.Imports.Newtonsoft.Json.JsonToken)">
             <summary>
@@ -838,7 +958,12 @@
         </member>
         <member name="P:Raven.Imports.Newtonsoft.Json.JsonWriter.DateTimeZoneHandling">
             <summary>
-            Get or set how <see cref="T:System.DateTime"/> time zones are handling when writing JSON.
+            Get or set how <see cref="T:System.DateTime"/> time zones are handling when writing JSON text.
+            </summary>
+        </member>
+        <member name="P:Raven.Imports.Newtonsoft.Json.JsonWriter.StringEscapeHandling">
+            <summary>
+            Get or set how strings are escaped when writing JSON text.
             </summary>
         </member>
         <member name="M:Raven.Imports.Newtonsoft.Json.Bson.BsonWriter.#ctor(System.IO.Stream)">
@@ -1043,7 +1168,7 @@
             <summary>
             Writes a <see cref="T:Byte[]"/> value that represents a BSON object id.
             </summary>
-            <param name="value"></param>
+            <param name="value">The Object ID value to write.</param>
         </member>
         <member name="M:Raven.Imports.Newtonsoft.Json.Bson.BsonWriter.WriteRegex(System.String,System.String)">
             <summary>
@@ -1192,7 +1317,7 @@
             <summary>
             Create a custom object
             </summary>
-            <typeparam name="T"></typeparam>
+            <typeparam name="T">The object type to convert.</typeparam>
         </member>
         <member name="M:Raven.Imports.Newtonsoft.Json.Converters.CustomCreationConverter`1.WriteJson(Raven.Imports.Newtonsoft.Json.JsonWriter,System.Object,Raven.Imports.Newtonsoft.Json.JsonSerializer)">
             <summary>
@@ -1217,7 +1342,7 @@
             Creates an object which will then be populated by the serializer.
             </summary>
             <param name="objectType">Type of the object.</param>
-            <returns></returns>
+            <returns>The created object.</returns>
         </member>
         <member name="M:Raven.Imports.Newtonsoft.Json.Converters.CustomCreationConverter`1.CanConvert(System.Type)">
             <summary>
@@ -1518,9 +1643,6 @@
             <summary>
             Converts an <see cref="T:System.Enum"/> to and from its name string value.
             </summary>
-            <summary>
-            Converts an <see cref="T:System.Enum"/> to and from its name string value.
-            </summary>
         </member>
         <member name="M:Raven.Imports.Newtonsoft.Json.Converters.StringEnumConverter.WriteJson(Raven.Imports.Newtonsoft.Json.JsonWriter,System.Object,Raven.Imports.Newtonsoft.Json.JsonSerializer)">
             <summary>
@@ -1718,6 +1840,10 @@
             <summary>
             Specifies default value handling options for the <see cref="T:Raven.Imports.Newtonsoft.Json.JsonSerializer"/>.
             </summary>
+            <example>
+              <code lang="cs" source="..\Src\Newtonsoft.Json.Tests\Documentation\SerializationTests.cs" region="ReducingSerializedJsonSizeDefaultValueHandlingObject" title="DefaultValueHandling Class"/>
+              <code lang="cs" source="..\Src\Newtonsoft.Json.Tests\Documentation\SerializationTests.cs" region="ReducingSerializedJsonSizeDefaultValueHandlingExample" title="DefaultValueHandling Ignore Example"/>
+            </example>
         </member>
         <member name="F:Raven.Imports.Newtonsoft.Json.DefaultValueHandling.Include">
             <summary>
@@ -1728,7 +1854,10 @@
         <member name="F:Raven.Imports.Newtonsoft.Json.DefaultValueHandling.Ignore">
             <summary>
             Ignore members where the member value is the same as the member's default value when serializing objects
-            so that is is not written to JSON, and ignores setting members when the JSON value equals the member's default value.
+            so that is is not written to JSON.
+            This option will ignore all default values (e.g. <c>null</c> for objects and nullable typesl; <c>0</c> for integers,
+            decimals and floating point numbers; and <c>false</c> for booleans). The default value ignored can be changed by
+            placing the <see cref="T:System.ComponentModel.DefaultValueAttribute"/> on the property.
             </summary>
         </member>
         <member name="F:Raven.Imports.Newtonsoft.Json.DefaultValueHandling.Populate">
@@ -1887,6 +2016,9 @@
             <summary>
             Provides methods for converting between common language runtime types and JSON types.
             </summary>
+            <example>
+              <code lang="cs" source="..\Src\Newtonsoft.Json.Tests\Documentation\SerializationTests.cs" region="SerializeObject" title="Serializing and Deserializing JSON with JsonConvert" />
+            </example>
         </member>
         <member name="F:Raven.Imports.Newtonsoft.Json.JsonConvert.True">
             <summary>
@@ -2085,7 +2217,7 @@
             Converts the <see cref="T:System.String"/> to its JSON string representation.
             </summary>
             <param name="value">The value to convert.</param>
-            <param name="delimter">The string delimiter character.</param>
+            <param name="delimiter">The string delimiter character.</param>
             <returns>A JSON string representation of the <see cref="T:System.String"/>.</returns>
         </member>
         <member name="M:Raven.Imports.Newtonsoft.Json.JsonConvert.ToString(System.Object)">
@@ -2845,6 +2977,12 @@
             Gets or sets the <see cref="T:System.Runtime.Serialization.SerializationBinder"/> used by the serializer when resolving type names.
             </summary>
         </member>
+        <member name="P:Raven.Imports.Newtonsoft.Json.JsonSerializer.TraceWriter">
+            <summary>
+            Gets or sets the <see cref="T:Raven.Imports.Newtonsoft.Json.Serialization.ITraceWriter"/> used by the serializer when writing trace messages.
+            </summary>
+            <value>The trace writer.</value>
+        </member>
         <member name="P:Raven.Imports.Newtonsoft.Json.JsonSerializer.TypeNameHandling">
             <summary>
             Gets or sets how type name writing and reading is handled by the serializer.
@@ -3031,6 +3169,12 @@
             Gets or sets the <see cref="T:Raven.Imports.Newtonsoft.Json.Serialization.IReferenceResolver"/> used by the serializer when resolving references.
             </summary>
             <value>The reference resolver.</value>
+        </member>
+        <member name="P:Raven.Imports.Newtonsoft.Json.JsonSerializerSettings.TraceWriter">
+            <summary>
+            Gets or sets the <see cref="T:Raven.Imports.Newtonsoft.Json.Serialization.ITraceWriter"/> used by the serializer when writing trace messages.
+            </summary>
+            <value>The trace writer.</value>
         </member>
         <member name="P:Raven.Imports.Newtonsoft.Json.JsonSerializerSettings.Binder">
             <summary>
@@ -3566,7 +3710,7 @@
         </member>
         <member name="P:Raven.Imports.Newtonsoft.Json.JsonValidatingReader.Value">
             <summary>
-            Gets the text value of the current Json token.
+            Gets the text value of the current JSON token.
             </summary>
             <value></value>
         </member>
@@ -3589,13 +3733,13 @@
         </member>
         <member name="P:Raven.Imports.Newtonsoft.Json.JsonValidatingReader.TokenType">
             <summary>
-            Gets the type of the current Json token.
+            Gets the type of the current JSON token.
             </summary>
             <value></value>
         </member>
         <member name="P:Raven.Imports.Newtonsoft.Json.JsonValidatingReader.ValueType">
             <summary>
-            Gets the Common Language Runtime (CLR) type for the current Json token.
+            Gets the Common Language Runtime (CLR) type for the current JSON token.
             </summary>
             <value></value>
         </member>
@@ -3776,6 +3920,9 @@
             <summary>
             Represents a JSON array.
             </summary>
+            <example>
+              <code lang="cs" source="..\Src\Newtonsoft.Json.Tests\Documentation\LinqToJsonTests.cs" region="LinqToJsonCreateParseArray" title="Parsing a JSON Array from Text" />
+            </example>
         </member>
         <member name="T:Raven.Imports.Newtonsoft.Json.Linq.JContainer">
             <summary>
@@ -3943,6 +4090,13 @@
             <param name="value">The value.</param>
             <returns>The result of the conversion.</returns>
         </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.Linq.JToken.op_Explicit(Raven.Imports.Newtonsoft.Json.Linq.JToken)~System.Nullable{System.Char}">
+            <summary>
+            Performs an explicit conversion from <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JToken"/> to <see cref="T:System.Nullable`1"/>.
+            </summary>
+            <param name="value">The value.</param>
+            <returns>The result of the conversion.</returns>
+        </member>
         <member name="M:Raven.Imports.Newtonsoft.Json.Linq.JToken.op_Explicit(Raven.Imports.Newtonsoft.Json.Linq.JToken)~System.Int32">
             <summary>
             Performs an explicit conversion from <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JToken"/> to <see cref="T:System.Int32"/>.
@@ -3964,6 +4118,20 @@
             <param name="value">The value.</param>
             <returns>The result of the conversion.</returns>
         </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.Linq.JToken.op_Explicit(Raven.Imports.Newtonsoft.Json.Linq.JToken)~System.Char">
+            <summary>
+            Performs an explicit conversion from <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JToken"/> to <see cref="T:System.Char"/>.
+            </summary>
+            <param name="value">The value.</param>
+            <returns>The result of the conversion.</returns>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.Linq.JToken.op_Explicit(Raven.Imports.Newtonsoft.Json.Linq.JToken)~System.Byte">
+            <summary>
+            Performs an explicit conversion from <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JToken"/> to <see cref="T:System.Byte"/>.
+            </summary>
+            <param name="value">The value.</param>
+            <returns>The result of the conversion.</returns>
+        </member>
         <member name="M:Raven.Imports.Newtonsoft.Json.Linq.JToken.op_Explicit(Raven.Imports.Newtonsoft.Json.Linq.JToken)~System.Nullable{System.Int32}">
             <summary>
             Performs an explicit conversion from <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JToken"/> to <see cref="T:System.Nullable`1"/>.
@@ -3979,6 +4147,13 @@
             <returns>The result of the conversion.</returns>
         </member>
         <member name="M:Raven.Imports.Newtonsoft.Json.Linq.JToken.op_Explicit(Raven.Imports.Newtonsoft.Json.Linq.JToken)~System.Nullable{System.UInt16}">
+            <summary>
+            Performs an explicit conversion from <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JToken"/> to <see cref="T:System.Nullable`1"/>.
+            </summary>
+            <param name="value">The value.</param>
+            <returns>The result of the conversion.</returns>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.Linq.JToken.op_Explicit(Raven.Imports.Newtonsoft.Json.Linq.JToken)~System.Nullable{System.Byte}">
             <summary>
             Performs an explicit conversion from <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JToken"/> to <see cref="T:System.Nullable`1"/>.
             </summary>
@@ -4065,6 +4240,41 @@
         <member name="M:Raven.Imports.Newtonsoft.Json.Linq.JToken.op_Explicit(Raven.Imports.Newtonsoft.Json.Linq.JToken)~System.Byte[]">
             <summary>
             Performs an explicit conversion from <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JToken"/> to <see cref="T:System.Byte[]"/>.
+            </summary>
+            <param name="value">The value.</param>
+            <returns>The result of the conversion.</returns>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.Linq.JToken.op_Explicit(Raven.Imports.Newtonsoft.Json.Linq.JToken)~System.Guid">
+            <summary>
+            Performs an explicit conversion from <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JToken"/> to <see cref="T:System.Guid"/>.
+            </summary>
+            <param name="value">The value.</param>
+            <returns>The result of the conversion.</returns>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.Linq.JToken.op_Explicit(Raven.Imports.Newtonsoft.Json.Linq.JToken)~System.Nullable{System.Guid}">
+            <summary>
+            Performs an explicit conversion from <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JToken"/> to <see cref="T:System.Guid"/>.
+            </summary>
+            <param name="value">The value.</param>
+            <returns>The result of the conversion.</returns>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.Linq.JToken.op_Explicit(Raven.Imports.Newtonsoft.Json.Linq.JToken)~System.TimeSpan">
+            <summary>
+            Performs an explicit conversion from <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JToken"/> to <see cref="T:System.TimeSpan"/>.
+            </summary>
+            <param name="value">The value.</param>
+            <returns>The result of the conversion.</returns>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.Linq.JToken.op_Explicit(Raven.Imports.Newtonsoft.Json.Linq.JToken)~System.Nullable{System.TimeSpan}">
+            <summary>
+            Performs an explicit conversion from <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JToken"/> to <see cref="T:System.TimeSpan"/>.
+            </summary>
+            <param name="value">The value.</param>
+            <returns>The result of the conversion.</returns>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.Linq.JToken.op_Explicit(Raven.Imports.Newtonsoft.Json.Linq.JToken)~System.Uri">
+            <summary>
+            Performs an explicit conversion from <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JToken"/> to <see cref="T:System.Uri"/>.
             </summary>
             <param name="value">The value.</param>
             <returns>The result of the conversion.</returns>
@@ -4251,6 +4461,41 @@
             <param name="value">The value to create a <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JValue"/> from.</param>
             <returns>The <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JValue"/> initialized with the specified value.</returns>
         </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.Linq.JToken.op_Implicit(System.Uri)~Raven.Imports.Newtonsoft.Json.Linq.JToken">
+            <summary>
+            Performs an implicit conversion from <see cref="T:System.Uri"/> to <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JToken"/>.
+            </summary>
+            <param name="value">The value to create a <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JValue"/> from.</param>
+            <returns>The <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JValue"/> initialized with the specified value.</returns>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.Linq.JToken.op_Implicit(System.TimeSpan)~Raven.Imports.Newtonsoft.Json.Linq.JToken">
+            <summary>
+            Performs an implicit conversion from <see cref="T:System.TimeSpan"/> to <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JToken"/>.
+            </summary>
+            <param name="value">The value to create a <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JValue"/> from.</param>
+            <returns>The <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JValue"/> initialized with the specified value.</returns>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.Linq.JToken.op_Implicit(System.Nullable{System.TimeSpan})~Raven.Imports.Newtonsoft.Json.Linq.JToken">
+            <summary>
+            Performs an implicit conversion from <see cref="T:System.Nullable`1"/> to <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JToken"/>.
+            </summary>
+            <param name="value">The value to create a <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JValue"/> from.</param>
+            <returns>The <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JValue"/> initialized with the specified value.</returns>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.Linq.JToken.op_Implicit(System.Guid)~Raven.Imports.Newtonsoft.Json.Linq.JToken">
+            <summary>
+            Performs an implicit conversion from <see cref="T:System.Guid"/> to <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JToken"/>.
+            </summary>
+            <param name="value">The value to create a <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JValue"/> from.</param>
+            <returns>The <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JValue"/> initialized with the specified value.</returns>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.Linq.JToken.op_Implicit(System.Nullable{System.Guid})~Raven.Imports.Newtonsoft.Json.Linq.JToken">
+            <summary>
+            Performs an implicit conversion from <see cref="T:System.Nullable`1"/> to <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JToken"/>.
+            </summary>
+            <param name="value">The value to create a <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JValue"/> from.</param>
+            <returns>The <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JValue"/> initialized with the specified value.</returns>
+        </member>
         <member name="M:Raven.Imports.Newtonsoft.Json.Linq.JToken.CreateReader">
             <summary>
             Creates an <see cref="T:Raven.Imports.Newtonsoft.Json.JsonReader"/> for this token.
@@ -4276,12 +4521,29 @@
             <summary>
             Creates the specified .NET type from the <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JToken"/>.
             </summary>
+            <typeparam name="T">The object type that the token will be deserialized to.</typeparam>
+            <returns>The new object created from the JSON value.</returns>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.Linq.JToken.ToObject(System.Type)">
+            <summary>
+            Creates the specified .NET type from the <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JToken"/>.
+            </summary>
+            <param name="objectType">The object type that the token will be deserialized to.</param>
             <returns>The new object created from the JSON value.</returns>
         </member>
         <member name="M:Raven.Imports.Newtonsoft.Json.Linq.JToken.ToObject``1(Raven.Imports.Newtonsoft.Json.JsonSerializer)">
             <summary>
             Creates the specified .NET type from the <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JToken"/> using the specified <see cref="T:Raven.Imports.Newtonsoft.Json.JsonSerializer"/>.
             </summary>
+            <typeparam name="T">The object type that the token will be deserialized to.</typeparam>
+            <param name="jsonSerializer">The <see cref="T:Raven.Imports.Newtonsoft.Json.JsonSerializer"/> that will be used when creating the object.</param>
+            <returns>The new object created from the JSON value.</returns>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.Linq.JToken.ToObject(System.Type,Raven.Imports.Newtonsoft.Json.JsonSerializer)">
+            <summary>
+            Creates the specified .NET type from the <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JToken"/> using the specified <see cref="T:Raven.Imports.Newtonsoft.Json.JsonSerializer"/>.
+            </summary>
+            <param name="objectType">The object type that the token will be deserialized to.</param>
             <param name="jsonSerializer">The <see cref="T:Raven.Imports.Newtonsoft.Json.JsonSerializer"/> that will be used when creating the object.</param>
             <returns>The new object created from the JSON value.</returns>
         </member>
@@ -4582,6 +4844,9 @@
             </summary>
             <param name="json">A <see cref="T:System.String"/> that contains JSON.</param>
             <returns>A <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JArray"/> populated from the string that contains JSON.</returns>
+            <example>
+              <code lang="cs" source="..\Src\Newtonsoft.Json.Tests\Documentation\LinqToJsonTests.cs" region="LinqToJsonCreateParseArray" title="Parsing a JSON Array from Text"/>
+            </example>
         </member>
         <member name="M:Raven.Imports.Newtonsoft.Json.Linq.JArray.FromObject(System.Object)">
             <summary>
@@ -4823,6 +5088,9 @@
             <summary>
             Represents a JSON object.
             </summary>
+            <example>
+              <code lang="cs" source="..\Src\Newtonsoft.Json.Tests\Documentation\LinqToJsonTests.cs" region="LinqToJsonCreateParse" title="Parsing a JSON Object from Text" />
+            </example>
         </member>
         <member name="M:Raven.Imports.Newtonsoft.Json.Linq.JObject.#ctor">
             <summary>
@@ -4879,6 +5147,9 @@
             </summary>
             <param name="json">A <see cref="T:System.String"/> that contains JSON.</param>
             <returns>A <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JObject"/> populated from the string that contains JSON.</returns>
+            <example>
+              <code lang="cs" source="..\Src\Newtonsoft.Json.Tests\Documentation\LinqToJsonTests.cs" region="LinqToJsonCreateParse" title="Parsing a JSON Object from Text"/>
+            </example>
         </member>
         <member name="M:Raven.Imports.Newtonsoft.Json.Linq.JObject.FromObject(System.Object)">
             <summary>
@@ -4901,6 +5172,34 @@
             </summary>
             <param name="writer">A <see cref="T:Raven.Imports.Newtonsoft.Json.JsonWriter"/> into which this method will write.</param>
             <param name="converters">A collection of <see cref="T:Raven.Imports.Newtonsoft.Json.JsonConverter"/> which will be used when writing the token.</param>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.Linq.JObject.GetValue(System.String)">
+            <summary>
+            Gets the <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JToken"/> with the specified property name.
+            </summary>
+            <param name="propertyName">Name of the property.</param>
+            <value>The <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JToken"/> with the specified property name.</value>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.Linq.JObject.GetValue(System.String,System.StringComparison)">
+            <summary>
+            Gets the <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JToken"/> with the specified property name.
+            The exact property name will be searched for first and if no matching property is found then
+            the <see cref="T:System.StringComparison"/> will be used to match a property.
+            </summary>
+            <param name="propertyName">Name of the property.</param>
+            <param name="comparison">One of the enumeration values that specifies how the strings will be compared.</param>
+            <value>The <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JToken"/> with the specified property name.</value>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.Linq.JObject.TryGetValue(System.String,System.StringComparison,Raven.Imports.Newtonsoft.Json.Linq.JToken@)">
+            <summary>
+            Tries to get the <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JToken"/> with the specified property name.
+            The exact property name will be searched for first and if no matching property is found then
+            the <see cref="T:System.StringComparison"/> will be used to match a property.
+            </summary>
+            <param name="propertyName">Name of the property.</param>
+            <param name="value">The value.</param>
+            <param name="comparison">One of the enumeration values that specifies how the strings will be compared.</param>
+            <returns>true if a value was successfully retrieved; otherwise, false.</returns>
         </member>
         <member name="M:Raven.Imports.Newtonsoft.Json.Linq.JObject.Add(System.String,Raven.Imports.Newtonsoft.Json.Linq.JToken)">
             <summary>
@@ -5262,6 +5561,12 @@
             </summary>
             <param name="value">The value.</param>
         </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.Linq.JValue.#ctor(System.Char)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JValue"/> class with the given value.
+            </summary>
+            <param name="value">The value.</param>
+        </member>
         <member name="M:Raven.Imports.Newtonsoft.Json.Linq.JValue.#ctor(System.UInt64)">
             <summary>
             Initializes a new instance of the <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JValue"/> class with the given value.
@@ -5269,6 +5574,12 @@
             <param name="value">The value.</param>
         </member>
         <member name="M:Raven.Imports.Newtonsoft.Json.Linq.JValue.#ctor(System.Double)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JValue"/> class with the given value.
+            </summary>
+            <param name="value">The value.</param>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.Linq.JValue.#ctor(System.Single)">
             <summary>
             Initializes a new instance of the <see cref="T:Raven.Imports.Newtonsoft.Json.Linq.JValue"/> class with the given value.
             </summary>
@@ -5890,6 +6201,10 @@
             <summary>
             Specifies null value handling options for the <see cref="T:Raven.Imports.Newtonsoft.Json.JsonSerializer"/>.
             </summary>
+            <example>
+              <code lang="cs" source="..\Src\Newtonsoft.Json.Tests\Documentation\SerializationTests.cs" region="ReducingSerializedJsonSizeNullValueHandlingObject" title="NullValueHandling Class"/>
+              <code lang="cs" source="..\Src\Newtonsoft.Json.Tests\Documentation\SerializationTests.cs" region="ReducingSerializedJsonSizeNullValueHandlingExample" title="NullValueHandling Ignore Example"/>
+            </example>
         </member>
         <member name="F:Raven.Imports.Newtonsoft.Json.NullValueHandling.Include">
             <summary>
@@ -5924,7 +6239,11 @@
         <member name="T:Raven.Imports.Newtonsoft.Json.PreserveReferencesHandling">
             <summary>
             Specifies reference handling options for the <see cref="T:Raven.Imports.Newtonsoft.Json.JsonSerializer"/>.
+            Note that references cannot be preserved when a value is set via a non-default constructor such as types that implement ISerializable.
             </summary>
+            <example>
+              <code lang="cs" source="..\Src\Newtonsoft.Json.Tests\Documentation\SerializationTests.cs" region="PreservingObjectReferencesOn" title="Preserve Object References"/>       
+            </example>
         </member>
         <member name="F:Raven.Imports.Newtonsoft.Json.PreserveReferencesHandling.None">
             <summary>
@@ -6195,6 +6514,33 @@
             </summary>
             <value>The <see cref="T:Raven.Imports.Newtonsoft.Json.Schema.JsonSchema"/> of items.</value>
         </member>
+        <member name="P:Raven.Imports.Newtonsoft.Json.Schema.JsonSchema.PositionalItemsValidation">
+            <summary>
+            Gets or sets a value indicating whether items in an array are validated using the <see cref="T:Raven.Imports.Newtonsoft.Json.Schema.JsonSchema"/> instance at their array position from <see cref="P:Raven.Imports.Newtonsoft.Json.Schema.JsonSchema.Items"/>.
+            </summary>
+            <value>
+            	<c>true</c> if items are validated using their array position; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Raven.Imports.Newtonsoft.Json.Schema.JsonSchema.AdditionalItems">
+            <summary>
+            Gets or sets the <see cref="T:Raven.Imports.Newtonsoft.Json.Schema.JsonSchema"/> of additional items.
+            </summary>
+            <value>The <see cref="T:Raven.Imports.Newtonsoft.Json.Schema.JsonSchema"/> of additional items.</value>
+        </member>
+        <member name="P:Raven.Imports.Newtonsoft.Json.Schema.JsonSchema.AllowAdditionalItems">
+            <summary>
+            Gets or sets a value indicating whether additional items are allowed.
+            </summary>
+            <value>
+            	<c>true</c> if additional items are allowed; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Raven.Imports.Newtonsoft.Json.Schema.JsonSchema.UniqueItems">
+            <summary>
+            Gets or sets whether the array items must be unique.
+            </summary>
+        </member>
         <member name="P:Raven.Imports.Newtonsoft.Json.Schema.JsonSchema.Properties">
             <summary>
             Gets or sets the <see cref="T:Raven.Imports.Newtonsoft.Json.Schema.JsonSchema"/> of properties.
@@ -6227,23 +6573,11 @@
             </summary>
             <value>The required property if this property is present.</value>
         </member>
-        <member name="P:Raven.Imports.Newtonsoft.Json.Schema.JsonSchema.Identity">
-            <summary>
-            Gets or sets the identity.
-            </summary>
-            <value>The identity.</value>
-        </member>
         <member name="P:Raven.Imports.Newtonsoft.Json.Schema.JsonSchema.Enum">
             <summary>
             Gets or sets the a collection of valid enum values allowed.
             </summary>
             <value>A collection of valid enum values allowed.</value>
-        </member>
-        <member name="P:Raven.Imports.Newtonsoft.Json.Schema.JsonSchema.Options">
-            <summary>
-            Gets or sets a collection of options.
-            </summary>
-            <value>A collection of options.</value>
         </member>
         <member name="P:Raven.Imports.Newtonsoft.Json.Schema.JsonSchema.Disallow">
             <summary>
@@ -6259,9 +6593,9 @@
         </member>
         <member name="P:Raven.Imports.Newtonsoft.Json.Schema.JsonSchema.Extends">
             <summary>
-            Gets or sets the extend <see cref="T:Raven.Imports.Newtonsoft.Json.Schema.JsonSchema"/>.
+            Gets or sets the collection of <see cref="T:Raven.Imports.Newtonsoft.Json.Schema.JsonSchema"/> that this schema extends.
             </summary>
-            <value>The extended <see cref="T:Raven.Imports.Newtonsoft.Json.Schema.JsonSchema"/>.</value>
+            <value>The collection of <see cref="T:Raven.Imports.Newtonsoft.Json.Schema.JsonSchema"/> that this schema extends.</value>
         </member>
         <member name="P:Raven.Imports.Newtonsoft.Json.Schema.JsonSchema.Format">
             <summary>
@@ -6381,10 +6715,10 @@
         </member>
         <member name="M:Raven.Imports.Newtonsoft.Json.Schema.JsonSchemaResolver.GetSchema(System.String)">
             <summary>
-            Gets a <see cref="T:Raven.Imports.Newtonsoft.Json.Schema.JsonSchema"/> for the specified id.
+            Gets a <see cref="T:Raven.Imports.Newtonsoft.Json.Schema.JsonSchema"/> for the specified reference.
             </summary>
-            <param name="id">The id.</param>
-            <returns>A <see cref="T:Raven.Imports.Newtonsoft.Json.Schema.JsonSchema"/> for the specified id.</returns>
+            <param name="reference">The id.</param>
+            <returns>A <see cref="T:Raven.Imports.Newtonsoft.Json.Schema.JsonSchema"/> for the specified reference.</returns>
         </member>
         <member name="P:Raven.Imports.Newtonsoft.Json.Schema.JsonSchemaResolver.LoadedSchemas">
             <summary>
@@ -6504,6 +6838,10 @@
             <summary>
             Used by <see cref="T:Raven.Imports.Newtonsoft.Json.JsonSerializer"/> to resolves a <see cref="T:Raven.Imports.Newtonsoft.Json.Serialization.JsonContract"/> for a given <see cref="T:System.Type"/>.
             </summary>
+            <example>
+              <code lang="cs" source="..\Src\Newtonsoft.Json.Tests\Documentation\SerializationTests.cs" region="ReducingSerializedJsonSizeContractResolverObject" title="IContractResolver Class"/>
+              <code lang="cs" source="..\Src\Newtonsoft.Json.Tests\Documentation\SerializationTests.cs" region="ReducingSerializedJsonSizeContractResolverExample" title="IContractResolver Example"/>
+            </example>
         </member>
         <member name="M:Raven.Imports.Newtonsoft.Json.Serialization.IContractResolver.ResolveContract(System.Type)">
             <summary>
@@ -6570,7 +6908,7 @@
             Resolves the default <see cref="T:Raven.Imports.Newtonsoft.Json.JsonConverter"/> for the contract.
             </summary>
             <param name="objectType">Type of the object.</param>
-            <returns></returns>
+            <returns>The contract's default <see cref="T:Raven.Imports.Newtonsoft.Json.JsonConverter"/>.</returns>
         </member>
         <member name="M:Raven.Imports.Newtonsoft.Json.Serialization.DefaultContractResolver.CreateDictionaryContract(System.Type)">
             <summary>
@@ -7004,6 +7342,12 @@
             </summary>
             <value>The <see cref="T:System.Type"/> of the collection items.</value>
         </member>
+        <member name="P:Raven.Imports.Newtonsoft.Json.Serialization.JsonArrayContract.IsMultidimensionalArray">
+            <summary>
+            Gets a value indicating whether the collection type is a multidimensional array.
+            </summary>
+            <value><c>true</c> if the collection type is a multidimensional array; otherwise, <c>false</c>.</value>
+        </member>
         <member name="T:Raven.Imports.Newtonsoft.Json.Serialization.JsonDictionaryContract">
             <summary>
             Contract details for a <see cref="T:System.Type"/> used by the <see cref="T:Raven.Imports.Newtonsoft.Json.JsonSerializer"/>.
@@ -7225,6 +7569,12 @@
             </summary>
             <value><c>true</c> if writable; otherwise, <c>false</c>.</value>
         </member>
+        <member name="P:Raven.Imports.Newtonsoft.Json.Serialization.JsonProperty.HasMemberAttribute">
+            <summary>
+            Gets a value indicating whether this <see cref="T:Raven.Imports.Newtonsoft.Json.Serialization.JsonProperty"/> has a member attribute.
+            </summary>
+            <value><c>true</c> if has a member attribute; otherwise, <c>false</c>.</value>
+        </member>
         <member name="P:Raven.Imports.Newtonsoft.Json.Serialization.JsonProperty.DefaultValue">
             <summary>
             Gets the default value.
@@ -7373,6 +7723,7 @@
             <summary>
             Represents a method that constructs an object.
             </summary>
+            <typeparam name="T">The object type to create.</typeparam>
         </member>
         <member name="T:Raven.Imports.Newtonsoft.Json.Serialization.OnErrorAttribute">
             <summary>
@@ -7721,6 +8072,12 @@
             </summary>
             <value>The patches.</value>
         </member>
+        <member name="P:Raven.Abstractions.Commands.PatchCommandData.PatchesIfMissing">
+            <summary>
+            Gets or sets the patches to apply to a default document if the document is missing
+            </summary>
+            <value>The patches.</value>
+        </member>
         <member name="P:Raven.Abstractions.Commands.PatchCommandData.Key">
             <summary>
             Gets the key.
@@ -7937,6 +8294,67 @@
                 Gets or sets the field in query result item for highlighting fragments
             </summary>
         </member>
+        <member name="T:Raven.Abstractions.Data.IndexFailureInformation">
+            <summary>
+            Information about index failure rates
+            </summary>
+        </member>
+        <member name="M:Raven.Abstractions.Data.IndexFailureInformation.GetErrorMessage">
+            <summary>
+            Gets the error message.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Raven.Abstractions.Data.IndexFailureInformation.IsInvalidIndex">
+            <summary>
+            Gets a value indicating whether this is invalid index.
+            </summary>
+            <value>
+            	<c>true</c> if this is invalid index; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Raven.Abstractions.Data.IndexFailureInformation.Name">
+            <summary>
+            Gets or sets the name.
+            </summary>
+            <value>The name.</value>
+        </member>
+        <member name="P:Raven.Abstractions.Data.IndexFailureInformation.Attempts">
+            <summary>
+            Gets or sets the number of indexing attempts.
+            </summary>
+        </member>
+        <member name="P:Raven.Abstractions.Data.IndexFailureInformation.Errors">
+            <summary>
+            Gets or sets the number of indexing errors.
+            </summary>
+        </member>
+        <member name="P:Raven.Abstractions.Data.IndexFailureInformation.Successes">
+            <summary>
+            Gets or sets the number of indexing successes.
+            </summary>
+        </member>
+        <member name="P:Raven.Abstractions.Data.IndexFailureInformation.ReduceAttempts">
+            <summary>
+            Gets or sets the number of reduce attempts.
+            </summary>
+        </member>
+        <member name="P:Raven.Abstractions.Data.IndexFailureInformation.ReduceErrors">
+            <summary>
+            Gets or sets the number of reduce errors.
+            </summary>
+        </member>
+        <member name="P:Raven.Abstractions.Data.IndexFailureInformation.ReduceSuccesses">
+            <summary>
+            Gets or sets the number of reduce successes.
+            </summary>
+        </member>
+        <member name="P:Raven.Abstractions.Data.IndexFailureInformation.FailureRate">
+            <summary>
+            Gets the failure rate.
+            </summary>
+            <value>The failure rate.</value>
+        </member>
         <member name="T:Raven.Abstractions.Data.ScriptedPatchRequest">
             <summary>
             A Advanced patch request for a specified document (using JavaScript)
@@ -8016,10 +8434,29 @@
             </summary>
             <value>The metadata.</value>
         </member>
+        <member name="P:Raven.Abstractions.Data.BatchResult.PatchResult">
+            <summary>
+            Gets or sets the result of a PATCH operation.
+            </summary>
+            <value>The PatchResult.</value>
+        </member>
+        <member name="P:Raven.Abstractions.Data.BatchResult.Deleted">
+            <summary>
+            Gets or sets the result of a DELETE operation.
+            </summary>
+            <value>true if the document was deleted, false if it did not exist.</value>
+        </member>
         <member name="M:Raven.Abstractions.Data.ConnectionStringParser`1.ProcessConnectionStringOption(System.Net.NetworkCredential,System.String,System.String)">
             <summary>
             Parse the connection string option
             </summary>
+        </member>
+        <member name="F:Raven.Abstractions.Data.Constants.EarthMeanRadiusKm">
+             <summary>
+             The International Union of Geodesy and Geophysics says the Earth's mean radius in KM is:
+            
+             [1] http://en.wikipedia.org/wiki/Earth_radius
+             </summary>
         </member>
         <member name="P:Raven.Abstractions.Data.FacetResults.Results">
             <summary>
@@ -8198,9 +8635,24 @@
             Ignore words which do not occur in at least this many documents. Default is 5.
             </summary>
         </member>
+        <member name="P:Raven.Abstractions.Data.MoreLikeThisQuery.MaximumDocumentFrequency">
+            <summary>
+            Ignore words which occur in more than this many documents. Default is Int32.MaxValue.
+            </summary>
+        </member>
+        <member name="P:Raven.Abstractions.Data.MoreLikeThisQuery.MaximumDocumentFrequencyPercentage">
+            <summary>
+            Ignore words which occur in more than this percentage of documents.
+            </summary>
+        </member>
         <member name="P:Raven.Abstractions.Data.MoreLikeThisQuery.Boost">
             <summary>
             Boost terms in query based on score. Default is false.
+            </summary>
+        </member>
+        <member name="P:Raven.Abstractions.Data.MoreLikeThisQuery.BoostFactor">
+            <summary>
+            Boost factor when boosting based on score. Default is 1.
             </summary>
         </member>
         <member name="P:Raven.Abstractions.Data.MoreLikeThisQuery.MinimumWordLength">
@@ -8453,7 +8905,7 @@
             Initializes a new instance of the <see cref="T:Raven.Abstractions.Data.IndexQuery"/> class.
             </summary>
         </member>
-        <member name="M:Raven.Abstractions.Data.IndexQuery.GetIndexQueryUrl(System.String,System.String,System.String)">
+        <member name="M:Raven.Abstractions.Data.IndexQuery.GetIndexQueryUrl(System.String,System.String,System.String,System.Boolean)">
             <summary>
             Gets the index query URL.
             </summary>
@@ -8468,6 +8920,11 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="P:Raven.Abstractions.Data.IndexQuery.PageSizeSet">
+            <summary>
+            Whatever the page size was explicitly set or still at its default value
+            </summary>
+        </member>
         <member name="P:Raven.Abstractions.Data.IndexQuery.Query">
             <summary>
             Gets or sets the query.
@@ -8479,6 +8936,11 @@
             Gets or sets the total size.
             </summary>
             <value>The total size.</value>
+        </member>
+        <member name="P:Raven.Abstractions.Data.IndexQuery.QueryInputs">
+            <summary>
+            Additional query inputs
+            </summary>
         </member>
         <member name="P:Raven.Abstractions.Data.IndexQuery.Start">
             <summary>
@@ -8584,6 +9046,16 @@
             Gets or sets the highlighter post tags
             </summary>
         </member>
+        <member name="P:Raven.Abstractions.Data.IndexQuery.ResultsTransformer">
+            <summary>
+            Gets or sets the results transformer
+            </summary>
+        </member>
+        <member name="P:Raven.Abstractions.Data.IndexQuery.DisableCaching">
+            <summary>
+            Whatever we should disable caching of query results
+            </summary>
+        </member>
         <member name="M:Raven.Abstractions.Data.SpatialIndexQuery.#ctor(Raven.Abstractions.Data.IndexQuery)">
             <summary>
             Initializes a new instance of the <see cref="T:Raven.Abstractions.Data.SpatialIndexQuery"/> class.
@@ -8600,6 +9072,11 @@
             Gets the custom query string variables.
             </summary>
             <returns></returns>
+        </member>
+        <member name="P:Raven.Abstractions.Data.SpatialIndexQuery.RadiusUnitOverride">
+            <summary>
+            Overrides the units defined in the spatial index
+            </summary>
         </member>
         <member name="T:Raven.Abstractions.Data.StringDistanceTypes">
             <summary>
@@ -8704,6 +9181,178 @@
             </summary>
             <value>The timeout.</value>
         </member>
+        <member name="T:Raven.Abstractions.Exceptions.BadRequestException">
+            <summary>
+            This exception is raised when a bad request is made to the server
+            </summary>
+        </member>
+        <member name="M:Raven.Abstractions.Exceptions.BadRequestException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Raven.Abstractions.Exceptions.BadRequestException"/> class.
+            </summary>
+        </member>
+        <member name="M:Raven.Abstractions.Exceptions.BadRequestException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Raven.Abstractions.Exceptions.BadRequestException"/> class.
+            </summary>
+            <param name="message">The message.</param>
+        </member>
+        <member name="M:Raven.Abstractions.Exceptions.BadRequestException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Raven.Abstractions.Exceptions.BadRequestException"/> class.
+            </summary>
+            <param name="message">The message.</param>
+            <param name="inner">The inner.</param>
+        </member>
+        <member name="M:Raven.Abstractions.Exceptions.BadRequestException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Raven.Abstractions.Exceptions.BadRequestException"/> class.
+            </summary>
+            <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
+            <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="info"/> parameter is null. </exception>
+            <exception cref="T:System.Runtime.Serialization.SerializationException">The class name is null or <see cref="P:System.Exception.HResult"/> is zero (0). </exception>
+        </member>
+        <member name="T:Raven.Abstractions.Exceptions.DocumentDoesNotExistsException">
+            <summary>
+            This exception is raised when a patch is made against a non existing document
+            </summary>
+        </member>
+        <member name="M:Raven.Abstractions.Exceptions.DocumentDoesNotExistsException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Raven.Abstractions.Exceptions.DocumentDoesNotExistsException"/> class.
+            </summary>
+        </member>
+        <member name="M:Raven.Abstractions.Exceptions.DocumentDoesNotExistsException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Raven.Abstractions.Exceptions.DocumentDoesNotExistsException"/> class.
+            </summary>
+            <param name="message">The message.</param>
+        </member>
+        <member name="M:Raven.Abstractions.Exceptions.DocumentDoesNotExistsException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Raven.Abstractions.Exceptions.DocumentDoesNotExistsException"/> class.
+            </summary>
+            <param name="message">The message.</param>
+            <param name="inner">The inner.</param>
+        </member>
+        <member name="M:Raven.Abstractions.Exceptions.DocumentDoesNotExistsException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Raven.Abstractions.Exceptions.DocumentDoesNotExistsException"/> class.
+            </summary>
+            <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
+            <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="info"/> parameter is null. </exception>
+            <exception cref="T:System.Runtime.Serialization.SerializationException">The class name is null or <see cref="P:System.Exception.HResult"/> is zero (0). </exception>
+        </member>
+        <member name="T:Raven.Abstractions.Exceptions.IndexDisabledException">
+            <summary>
+            This exception is raised when querying an index that was disabled because the error rate exceeded safety margins
+            </summary>
+        </member>
+        <member name="M:Raven.Abstractions.Exceptions.IndexDisabledException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Raven.Abstractions.Exceptions.IndexDisabledException"/> class.
+            </summary>
+        </member>
+        <member name="M:Raven.Abstractions.Exceptions.IndexDisabledException.#ctor(Raven.Abstractions.Data.IndexFailureInformation)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Raven.Abstractions.Exceptions.IndexDisabledException"/> class.
+            </summary>
+            <param name="information">The information.</param>
+        </member>
+        <member name="M:Raven.Abstractions.Exceptions.IndexDisabledException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Raven.Abstractions.Exceptions.IndexDisabledException"/> class.
+            </summary>
+            <param name="message">The message.</param>
+        </member>
+        <member name="M:Raven.Abstractions.Exceptions.IndexDisabledException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Raven.Abstractions.Exceptions.IndexDisabledException"/> class.
+            </summary>
+            <param name="message">The message.</param>
+            <param name="inner">The inner.</param>
+        </member>
+        <member name="M:Raven.Abstractions.Exceptions.IndexDisabledException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Raven.Abstractions.Exceptions.IndexDisabledException"/> class.
+            </summary>
+            <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
+            <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="info"/> parameter is null. </exception>
+            <exception cref="T:System.Runtime.Serialization.SerializationException">The class name is null or <see cref="P:System.Exception.HResult"/> is zero (0). </exception>
+        </member>
+        <member name="P:Raven.Abstractions.Exceptions.IndexDisabledException.Information">
+            <summary>
+            Gets or sets the information about the index failure 
+            </summary>
+            <value>The information.</value>
+        </member>
+        <member name="T:Raven.Abstractions.Exceptions.IndexDoesNotExistsException">
+            <summary>
+            This exception is raised when a query is made against a non existing index
+            </summary>
+        </member>
+        <member name="M:Raven.Abstractions.Exceptions.IndexDoesNotExistsException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Raven.Abstractions.Exceptions.IndexDoesNotExistsException"/> class.
+            </summary>
+        </member>
+        <member name="M:Raven.Abstractions.Exceptions.IndexDoesNotExistsException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Raven.Abstractions.Exceptions.IndexDoesNotExistsException"/> class.
+            </summary>
+            <param name="message">The message.</param>
+        </member>
+        <member name="M:Raven.Abstractions.Exceptions.IndexDoesNotExistsException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Raven.Abstractions.Exceptions.IndexDoesNotExistsException"/> class.
+            </summary>
+            <param name="message">The message.</param>
+            <param name="inner">The inner.</param>
+        </member>
+        <member name="M:Raven.Abstractions.Exceptions.IndexDoesNotExistsException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Raven.Abstractions.Exceptions.IndexDoesNotExistsException"/> class.
+            </summary>
+            <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
+            <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="info"/> parameter is null. </exception>
+            <exception cref="T:System.Runtime.Serialization.SerializationException">The class name is null or <see cref="P:System.Exception.HResult"/> is zero (0). </exception>
+        </member>
+        <member name="T:Raven.Abstractions.Exceptions.OperationVetoedException">
+            <summary>
+            This exception is raised when an operation has been vetoed by a trigger
+            </summary>
+        </member>
+        <member name="M:Raven.Abstractions.Exceptions.OperationVetoedException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Raven.Abstractions.Exceptions.OperationVetoedException"/> class.
+            </summary>
+        </member>
+        <member name="M:Raven.Abstractions.Exceptions.OperationVetoedException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Raven.Abstractions.Exceptions.OperationVetoedException"/> class.
+            </summary>
+            <param name="message">The message.</param>
+        </member>
+        <member name="M:Raven.Abstractions.Exceptions.OperationVetoedException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Raven.Abstractions.Exceptions.OperationVetoedException"/> class.
+            </summary>
+            <param name="message">The message.</param>
+            <param name="inner">The inner.</param>
+        </member>
+        <member name="M:Raven.Abstractions.Exceptions.OperationVetoedException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Raven.Abstractions.Exceptions.OperationVetoedException"/> class.
+            </summary>
+            <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
+            <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="info"/> parameter is null. </exception>
+            <exception cref="T:System.Runtime.Serialization.SerializationException">The class name is null or <see cref="P:System.Exception.HResult"/> is zero (0). </exception>
+        </member>
         <member name="T:Raven.Abstractions.Extensions.ExceptionExtensions">
             <summary>
              Extension methods to handle common scenarios
@@ -8723,6 +9372,9 @@
             </summary>
             <param name="e">The exception.</param>
             <returns>The primary portion of the exception message.</returns>
+        </member>
+        <member name="M:Raven.Abstractions.Extensions.ExceptionExtensions.ExceptionToString(System.Exception,System.Action{System.Text.StringBuilder})">
+            <remarks>Code from http://stackoverflow.com/questions/1886611/c-overriding-tostring-method-for-custom-exceptions </remarks>
         </member>
         <member name="T:Raven.Abstractions.Exceptions.ConcurrencyException">
             <summary>
@@ -8746,6 +9398,15 @@
             </summary>
             <param name="message">The message.</param>
             <param name="inner">The inner.</param>
+        </member>
+        <member name="M:Raven.Abstractions.Exceptions.ConcurrencyException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Raven.Abstractions.Exceptions.ConcurrencyException"/> class.
+            </summary>
+            <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
+            <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="info"/> parameter is null. </exception>
+            <exception cref="T:System.Runtime.Serialization.SerializationException">The class name is null or <see cref="P:System.Exception.HResult"/> is zero (0). </exception>
         </member>
         <member name="P:Raven.Abstractions.Exceptions.ConcurrencyException.ExpectedETag">
             <summary>
@@ -8820,10 +9481,202 @@
             Deserialize a <param name="self"/> to an instance of<typeparam name="T"/>
             </summary>
         </member>
+        <member name="M:Raven.Abstractions.Extensions.JsonExtensions.JsonDeserialization``1(System.IO.Stream)">
+            <summary>
+            Deserialize a <param name="self"/> to an instance of<typeparam name="T"/>
+            </summary>
+        </member>
         <member name="F:Raven.Abstractions.Default.DateTimeFormatsToRead">
             <remarks>
             'r' format is used on the in metadata, because it's delivered as http header. 
             </remarks>
+        </member>
+        <member name="T:Raven.Imports.Newtonsoft.Json.JsonTextReaderAsync">
+            <summary>
+            Represents a reader that provides fast, non-cached, forward-only access to JSON text data.
+            </summary>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.JsonTextReaderAsync.#ctor(System.IO.TextReader)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Raven.Imports.Newtonsoft.Json.JsonReader"/> class with the specified <see cref="T:System.IO.TextReader"/>.
+            </summary>
+            <param name="reader">The <c>TextReader</c> containing the XML data to read.</param>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.JsonTextReaderAsync.ReadAsync">
+            <summary>
+            Reads the next JSON token from the stream.
+            </summary>
+            <returns>
+            true if the next token was read successfully; false if there are no more tokens to read.
+            </returns>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.JsonTextReaderAsync.ReadAsBytes">
+            <summary>
+            Reads the next JSON token from the stream as a <see cref="T:Byte[]"/>.
+            </summary>
+            <returns>
+            A <see cref="T:Byte[]"/> or a null reference if the next JSON token is null. This method will return <c>null</c> at the end of an array.
+            </returns>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.JsonTextReaderAsync.ReadAsDecimal">
+            <summary>
+            Reads the next JSON token from the stream as a <see cref="T:System.Nullable`1"/>.
+            </summary>
+            <returns>A <see cref="T:System.Nullable`1"/>. This method will return <c>null</c> at the end of an array.</returns>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.JsonTextReaderAsync.ReadAsInt32">
+            <summary>
+            Reads the next JSON token from the stream as a <see cref="T:System.Nullable`1"/>.
+            </summary>
+            <returns>A <see cref="T:System.Nullable`1"/>. This method will return <c>null</c> at the end of an array.</returns>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.JsonTextReaderAsync.ReadAsString">
+            <summary>
+            Reads the next JSON token from the stream as a <see cref="T:System.String"/>.
+            </summary>
+            <returns>A <see cref="T:System.String"/>. This method will return <c>null</c> at the end of an array.</returns>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.JsonTextReaderAsync.ReadAsDateTime">
+            <summary>
+            Reads the next JSON token from the stream as a <see cref="T:System.Nullable`1"/>.
+            </summary>
+            <returns>A <see cref="T:System.String"/>. This method will return <c>null</c> at the end of an array.</returns>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.JsonTextReaderAsync.ReadAsDateTimeOffset">
+            <summary>
+            Reads the next JSON token from the stream as a <see cref="T:System.Nullable`1"/>.
+            </summary>
+            <returns>A <see cref="T:System.DateTimeOffset"/>. This method will return <c>null</c> at the end of an array.</returns>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.JsonTextReaderAsync.Close">
+            <summary>
+            Changes the state to closed. 
+            </summary>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.JsonTextReaderAsync.HasLineInfo">
+            <summary>
+            Gets a value indicating whether the class can return line information.
+            </summary>
+            <returns>
+            	<c>true</c> if LineNumber and LinePosition can be provided; otherwise, <c>false</c>.
+            </returns>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.JsonTextReaderAsync.SkipAsync">
+            <summary>
+            Skips the children of the current token.
+            </summary>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.JsonTextReaderAsync.SetToken(Raven.Imports.Newtonsoft.Json.JsonToken)">
+            <summary>
+            Sets the current token.
+            </summary>
+            <param name="newToken">The new token.</param>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.JsonTextReaderAsync.SetToken(Raven.Imports.Newtonsoft.Json.JsonToken,System.Object)">
+            <summary>
+            Sets the current token and value.
+            </summary>
+            <param name="newToken">The new token.</param>
+            <param name="value">The value.</param>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.JsonTextReaderAsync.SetStateBasedOnCurrent">
+            <summary>
+            Sets the state based on current token type.
+            </summary>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.JsonTextReaderAsync.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+        </member>
+        <member name="M:Raven.Imports.Newtonsoft.Json.JsonTextReaderAsync.Dispose(System.Boolean)">
+            <summary>
+            Releases unmanaged and - optionally - managed resources
+            </summary>
+            <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        </member>
+        <member name="P:Raven.Imports.Newtonsoft.Json.JsonTextReaderAsync.LineNumber">
+            <summary>
+            Gets the current line number.
+            </summary>
+            <value>
+            The current line number or 0 if no line information is available (for example, HasLineInfo returns false).
+            </value>
+        </member>
+        <member name="P:Raven.Imports.Newtonsoft.Json.JsonTextReaderAsync.LinePosition">
+            <summary>
+            Gets the current line position.
+            </summary>
+            <value>
+            The current line position or 0 if no line information is available (for example, HasLineInfo returns false).
+            </value>
+        </member>
+        <member name="P:Raven.Imports.Newtonsoft.Json.JsonTextReaderAsync.CurrentState">
+            <summary>
+            Gets the current reader JsonReader.State.
+            </summary>
+            <value>The current reader JsonReader.State.</value>
+        </member>
+        <member name="P:Raven.Imports.Newtonsoft.Json.JsonTextReaderAsync.CloseInput">
+            <summary>
+            Gets or sets a value indicating whether the underlying stream or
+            <see cref="T:System.IO.TextReader"/> should be closed when the reader is closed.
+            </summary>
+            <value>
+            true to close the underlying stream or <see cref="T:System.IO.TextReader"/> when
+            the reader is closed; otherwise false. The default is true.
+            </value>
+        </member>
+        <member name="P:Raven.Imports.Newtonsoft.Json.JsonTextReaderAsync.QuoteChar">
+            <summary>
+            Gets the quotation mark character used to enclose the value of a string.
+            </summary>
+        </member>
+        <member name="P:Raven.Imports.Newtonsoft.Json.JsonTextReaderAsync.DateTimeZoneHandling">
+            <summary>
+            Get or set how <see cref="T:System.DateTime"/> time zones are handling when reading JSON.
+            </summary>
+        </member>
+        <member name="P:Raven.Imports.Newtonsoft.Json.JsonTextReaderAsync.DateParseHandling">
+            <summary>
+            Get or set how date formatted strings, e.g. "\/Date(1198908717056)\/" and "2012-03-21T05:40Z", are parsed when reading JSON.
+            </summary>
+        </member>
+        <member name="P:Raven.Imports.Newtonsoft.Json.JsonTextReaderAsync.MaxDepth">
+            <summary>
+            Gets or sets the maximum depth allowed when reading JSON. Reading past this depth will throw a <see cref="T:Raven.Imports.Newtonsoft.Json.JsonReaderException"/>.
+            </summary>
+        </member>
+        <member name="P:Raven.Imports.Newtonsoft.Json.JsonTextReaderAsync.TokenType">
+            <summary>
+            Gets the type of the current JSON token. 
+            </summary>
+        </member>
+        <member name="P:Raven.Imports.Newtonsoft.Json.JsonTextReaderAsync.Value">
+            <summary>
+            Gets the text value of the current JSON token.
+            </summary>
+        </member>
+        <member name="P:Raven.Imports.Newtonsoft.Json.JsonTextReaderAsync.ValueType">
+            <summary>
+            Gets The Common Language Runtime (CLR) type for the current JSON token.
+            </summary>
+        </member>
+        <member name="P:Raven.Imports.Newtonsoft.Json.JsonTextReaderAsync.Depth">
+            <summary>
+            Gets the depth of the current token in the JSON document.
+            </summary>
+            <value>The depth of the current token in the JSON document.</value>
+        </member>
+        <member name="P:Raven.Imports.Newtonsoft.Json.JsonTextReaderAsync.Path">
+            <summary>
+            Gets the path of the current JSON token. 
+            </summary>
+        </member>
+        <member name="P:Raven.Imports.Newtonsoft.Json.JsonTextReaderAsync.Culture">
+            <summary>
+            Gets or sets the culture used when reading JSON. Defaults to <see cref="P:System.Globalization.CultureInfo.InvariantCulture"/>.
+            </summary>
         </member>
         <member name="T:Raven.Abstractions.Indexing.FieldTermVector">
             <summary>
@@ -8856,10 +9709,21 @@
             Store the term vector + Token position and offset information
             </summary>
         </member>
+        <member name="P:Raven.Abstractions.Indexing.SpatialOptions.Units">
+            <summary>
+            Circle radius units, only used for geography  indexes
+            </summary>
+        </member>
         <member name="F:Raven.Abstractions.Indexing.SpatialRelation.Nearby">
             <summary>
             Does not filter the query, merely sort by the distance
             </summary>
+        </member>
+        <member name="M:Raven.Abstractions.Indexing.GeographySpatialOptionsFactory.Default(Raven.Abstractions.Indexing.SpatialUnits)">
+            <summary>
+            Defines a Geohash Prefix Tree index using a default Max Tree Level <see cref="F:Raven.Abstractions.Indexing.SpatialOptions.DefaultGeohashLevel"/>
+            </summary>
+            <returns></returns>
         </member>
         <member name="P:Raven.Abstractions.Indexing.SuggestionOptions.Distance">
             <summary>
@@ -9652,6 +10516,12 @@
             </summary>
             <param name="value">The value.</param>
         </member>
+        <member name="M:Raven.Json.Linq.RavenJValue.#ctor(System.Single)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Raven.Json.Linq.RavenJValue"/> class with the given value.
+            </summary>
+            <param name="value">The value.</param>
+        </member>
         <member name="M:Raven.Json.Linq.RavenJValue.#ctor(System.DateTime)">
             <summary>
             Initializes a new instance of the <see cref="T:Raven.Json.Linq.RavenJValue"/> class with the given value.
@@ -9910,6 +10780,13 @@
             <param name="stream">The stream to read.</param>
             <returns>The returned byte array.</returns>
         </member>
+        <member name="M:Raven.Abstractions.Extensions.StreamExtensions.ReadDataAsync(System.IO.Stream)">
+            <summary>
+            Asynchronously reads the entire request buffer to memory and return it as a byte array.
+            </summary>
+            <param name="stream">The stream to read.</param>
+            <returns>A task that, when completed, contains the returned byte array.</returns>
+        </member>
         <member name="M:Raven.Abstractions.Extensions.StreamExtensions.ReadEntireBlock(System.IO.Stream,System.Int32)">
             <summary>
             Allocates a byte array and reads an entire block from the stream
@@ -10015,6 +10892,11 @@
             Get or set the name of the index
             </summary>
         </member>
+        <member name="P:Raven.Abstractions.Indexing.IndexDefinition.LockMode">
+            <summary>
+            Get or set the index lock mode
+            </summary>
+        </member>
         <member name="P:Raven.Abstractions.Indexing.IndexDefinition.Map">
             <summary>
             Gets or sets the map function, if there is only one
@@ -10046,11 +10928,6 @@
             <value>
             	<c>true</c> if this instance is map reduce; otherwise, <c>false</c>.
             </value>
-        </member>
-        <member name="P:Raven.Abstractions.Indexing.IndexDefinition.IsTemp">
-            <summary>
-            Returns a boolean value indicating whether this IndexDefinition is of a temporary index
-            </summary>
         </member>
         <member name="P:Raven.Abstractions.Indexing.IndexDefinition.Stores">
             <summary>
@@ -10092,6 +10969,17 @@
             Gets or sets the term vectors options
             </summary>
             <value>The term vectors.</value>
+        </member>
+        <member name="P:Raven.Abstractions.Indexing.IndexDefinition.SpatialIndexes">
+            <summary>
+            Gets or sets the spatial options
+            </summary>
+            <value>The spatial options.</value>
+        </member>
+        <member name="P:Raven.Abstractions.Indexing.TransformerDefinition.TransformResults">
+            <summary>
+            Gets or sets the translator function
+            </summary>
         </member>
         <member name="T:Raven.Abstractions.Indexing.NumberUtil">
             <summary>
@@ -10526,6 +11414,11 @@
             The timestamp of the last time the index was queried
             </summary>
         </member>
+        <member name="P:Raven.Abstractions.Data.QueryResult.DurationMilliseconds">
+            <summary>
+            The duration of actually executing the query server side
+            </summary>
+        </member>
         <member name="T:Raven.Abstractions.Indexing.SortOptions">
             <summary>
             The sort options to use for a particular field
@@ -10684,6 +11577,12 @@
             </summary>
             <value>The id.</value>
         </member>
+        <member name="P:Raven.Abstractions.Replication.ReplicationDocument.Source">
+            <summary>
+            Gets or sets the Source.
+            </summary>
+            <value>The Source.</value>
+        </member>
         <member name="P:Raven.Abstractions.Smuggler.SmugglerOptions.BackupPath">
             <summary>
             The path to write to when doing an export, or where to read from when doing an import.
@@ -10711,6 +11610,18 @@
             Should we exclude any documents which have already expired by checking the expiration meta property created by the expiration bundle
             </summary>
         </member>
+        <member name="T:Raven.Abstractions.Spatial.ShapeConverter">
+            <summary>
+            Converts shape objects to strings, if they are not already a string
+            </summary>
+        </member>
+        <member name="T:Raven.Abstractions.Spatial.WktSanitizer">
+            <summary>
+            Santizes WKT strings, reducing them to 2D (discarding 3D and 4D values).
+            We do this because we only index and query in 2D,
+            but its nice to allow users to store shapes in 3D and 4D if they need to.
+            </summary>
+        </member>
         <member name="T:Raven.Abstractions.Util.RavenQuery">
             <summary>
             Helper class that provide a way to escape query terms
@@ -10729,6 +11640,11 @@
             <remarks>
             http://lucene.apache.org/java/2_4_0/queryparsersyntax.html#Escaping%20Special%20Characters
             </remarks>
+        </member>
+        <member name="M:Raven.Abstractions.Util.RavenQuery.EscapeField(System.String)">
+            <summary>
+            Escapes Lucene field
+            </summary>
         </member>
     </members>
 </doc>
