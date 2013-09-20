@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Wcjj.RavenDBMembership</id>
+    <version>2.5.2700</version>
+    <authors>Wilby C. Jackson Jr.</authors>
+    <owners>Wilby C. Jackson Jr.</owners>
+    <licenseUrl>http://opensource.org/licenses/mit-license.php</licenseUrl>
+    <projectUrl>https://github.com/wilby/RavenDBMembership</projectUrl>    
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>
+		Asp.Net Membership and Role Provider for RavenDB
+		
+		CANNOT BE USED WITH DEFAULT MVC4 AccountController.		
+	</description>
+	<summary>
+		Asp.Net Membership and Role Provider for RavenDB
+		
+		CANNOT BE USED WITH DEFAULT MVC4 AccountController.
+		USE SecurityGuard.MVC4 or similar to manage your membership and roles 
+		https://www.nuget.org/packages/SecurityGuard.MVC4/
+		http://www.mvccentral.net/Story/Details/tools/kahanu/securityguard-nuget-package-for-asp-net-membership
+	</summary>
+    <releaseNotes>
+		Updated Clients to RavenDB 2.5.2700
+	</releaseNotes>
+    <copyright>Copyright Wilby C. Jackson Jr. 2013</copyright>
+    <tags>AspNet RavenDB Memberhip Role Provider</tags>
+    <dependencies>
+		<group>
+			<dependency id="RavenDB.Client" version="2.5.2700" />
+			<dependency id="RavenDB.Embedded" version="2.5.2700" />
+		</group>
+    </dependencies>	
+  </metadata>
+  <files>
+		<file src="readme.txt" target="" />
+		<file src="..\src\RavenDBMembership\bin\Release\RavenDBMembership.dll" target="lib\net40" />
+		<file src="..\src\RavenDBMembership\bin\Release\RavenDBMembership.dll" target="lib\net45" />
+  </files>
+</package>
