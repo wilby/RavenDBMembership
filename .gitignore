@@ -1,6 +1,7 @@
 TestResult.xml
 build/
-bin/
+[Dd]ebug
+[Rr]elease
 obj/
 _ReSharper.*
 *.ReSharper.user
@@ -10,3 +11,8 @@ _ReSharper.*
 *.aps
 *.suo
 *.sln.cache
+Visual Studio 2010\
+Visual Studio 2010Projects\
+Visual Studio 2010Templates\
+*.ncruchsolution*
+
